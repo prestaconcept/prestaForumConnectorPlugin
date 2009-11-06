@@ -1,0 +1,15 @@
+all:
+  prestaForumConnector:
+    userConnector:
+      class:             prestaSfGuardPropelConnector
+      getUsernameMethod: getUsername
+      getEmailMethod:    getUsername
+      setUsernameMethod: setUsername # for testing purpose
+      setEmailMethod:    setUsername # for testing purpose
+      
+    forumConnector:
+      class:  prestaPhpBB3Connector
+      param: 
+        forumFieldProjectUserId: project_user_id
+        
+    forumWebDir:             <?php echo sfConfig::get('sf_web_dir');?>/phpBB3_v2/
