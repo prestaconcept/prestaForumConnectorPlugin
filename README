@@ -1,9 +1,10 @@
 # prestaForumConnectorPlugin
 
-The prestaForumConnectorPlugin aims to provide an easy way to connect an user management system to a forum solution of your choice.
+The prestaForumConnectorPlugin aims to provide an easy way to connect an user management system to the forum solution of your choice.
+
 Just choose the connectors of you choice for the user management system on one part and for the forum solution, follow the install instructions and you will be able to use the same user database and the same login process.
 
-For example, this will allow you to connect sfGuard to phpBB3. Currently only sfGuard ( Propel or Doctrine versions) and phpBB3 are supported. More will come.
+For example, this will allow you to connect sfGuard to phpBB3. Currently only sfGuard (Propel or Doctrine versions) and phpBB3 are supported. More will come.
 
 Extending the plugin in order to create a connector to an other user management system can be done very quickly.
 

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.4.6" version="2.0"
+	xmlns="http://pear.php.net/dtd/package-2.0"
+	xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+	<name>prestaForumConnectorPlugin</name>
+	<channel>plugins.symfony-project.org</channel>
+	<summary>Provide an easy way to connect an user management system to the forum solution of your choice.</summary>
+	<description>
+The prestaForumConnectorPlugin aims to provide an easy way to connect an user management system to the forum solution of your choice.
+
+Just choose the connectors of you choice for the user management system on one part and for the forum solution, follow the install instructions and you will be able to use the same user database and the same login process.
+
+For example, this will allow you to connect sfGuard to phpBB3. Currently only sfGuard (Propel or Doctrine versions) and phpBB3 are supported. More will come.
+
+	</description>
+	<lead>
+		<name>Christophe DOLIVET</name>
+		<user>cdolivet</user>
+		<email>cdolivet@prestaconcept.net</email>
+		<active>yes</active>
+	</lead>
+	<lead>
+		<name>Mikael RANDY</name>
+		<user>mikael.randy</user>
+		<email>mrandy@prestaconcept.net</email>
+		<active>yes</active>
+	</lead>
+	<date>2009-11-09</date>
+	<version>
+		<release>0.0.1</release>
+		<api>0.0.1</api>
+	</version>
+	<stability>
+		<release>alpha</release>
+		<api>alpha</api>
+	</stability>
+	<license uri="http://www.symfony-project.org/license">
+		MIT license
+	</license>
+	<notes>-</notes>
+	<contents>
+		<dir name="/">
+			<file role="data" name="config/app.yml" />
+			<file role="data" name="config/config.php" />
+			<file role="data" name="lib/class/forumConnector/prestaAbstractForumConnector.class.php" />
+			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3ConnectorMock.class.php" />
+			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3Connector.class.php" />
+			<file role="data" name="lib/class/forumConnector/prestaForumConnectorMockInterface.php" />
+			<file role="data" name="lib/class/userConnector/prestaUserConnectorMockInterface.php" />
+			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaSfGuardDoctrineConnectorMock.class.php" />
+			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaSfGuardDoctrineConnector.class.php" />
+			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaForumConnectorSfGuardDoctrineSecurityUser.class.php" />
+			<file role="data" name="lib/class/userConnector/prestaAbstractUserConnector.class.php" />
+			<file role="data" name="lib/class/userConnector/sfGuardPropel/prestaForumConnectorSfGuardPropelSecurityUser.class.php" />
+			<file role="data" name="lib/class/userConnector/sfGuardPropel/prestaSfGuardPropelConnector.class.php" />
+			<file role="data" name="lib/class/userConnector/sfGuardPropel/prestaSfGuardPropelConnectorMock.class.php" />
+			<file role="data" name="lib/class/prestaForumFactory.class.php" />
+			<file role="data" name="lib/task/prestaForumConnectorPatchForumTask.class.php" />
+			<file role="data" name="lib/task/prestaForumConnectorPromoteUserTask.class.php" />
+			<file role="data" name="lib/task/prestaForumConnectorSyncUserTask.class.php" />
+			<file role="data" name="LICENSE" />
+			<file role="data" name="README" />
+
+		</dir>
+	</contents>
+	<dependencies>
+		<required>
+			<php>
+				<min>5.2.0</min>
+			</php>
+			<pearinstaller>
+				<min>1.4.1</min>
+			</pearinstaller>
+			<package>
+				<name>symfony</name>
+				<channel>pear.symfony-project.com</channel>
+				<min>1.1.0</min>
+				<max>2.0.0</max>
+				<exclude>2.0.0</exclude>
+			</package>
+		</required>
+	</dependencies>
+	<phprelease />
+	<changelog>
+		<release>
+	      <version>
+	        <release>0.0.1</release>
+	        <api>0.0.1</api>
+	      </version>
+	      <stability>
+	       <release>alpha</release>
+	       <api>alpha</api>
+	      </stability>
+	      <license uri="http://www.symfony-project.com/license">MIT license</license>
+	      <date>2009-11-09</date>
+	      <notes>
+	        * First internal beta version
+	      </notes>
+	    </release>
+	</changelog>
+</package>
