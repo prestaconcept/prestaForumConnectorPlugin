@@ -108,9 +108,12 @@ class prestaSfGuardDoctrineConnector extends prestaAbstractUserConnector
 	 */
 	public function getAllUserId()
 	{
-		$q	= Doctrine::getTable('sfGuardUser')->createQuery('u')->select('u.id');
-		$a_userIds = $q->execute();
-			var_dump( $a_userIds );die;
+		$a_userIds	= array();
+		$q			= Doctrine_Query::create()->from('sfGuardUser u')->select('u.id');
+  		foreach( $q->fetchArray() as $line )
+		{
+			$a_userIds[]	= $line['id'];
+		}
 		return $a_userIds;
 	}
 }

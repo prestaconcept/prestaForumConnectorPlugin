@@ -25,7 +25,7 @@ class prestaForumFactory
 
 		if(!(self::$userInstance instanceof $class) )
 		{
-			self::$userInstance	= new $class( array_key_exists( 'param', $options ) ? $options['param'] : array() );
+			self::$userInstance	= new $class( array_key_exists( 'param', $options ) && is_array( $options['param'] ) ? $options['param'] : array() );
 		}
 		
 		return self::$userInstance;
@@ -46,7 +46,7 @@ class prestaForumFactory
 
 		if(!(self::$forumInstance instanceof $class))
 		{
-			self::$forumInstance = new $class( array_key_exists( 'param', $options ) ? $options['param'] : array() );
+			self::$forumInstance = new $class( array_key_exists( 'param', $options ) && is_array( $options['param'] ) ? $options['param'] : array() );
 		}
 		
 		return self::$forumInstance;
@@ -67,7 +67,7 @@ class prestaForumFactory
 
 		if(!(self::$userInstance instanceof $class) )
 		{
-			self::$userInstance	= new $class( array_key_exists( 'param', $options ) ? $options['param'] : array() );
+			self::$userInstance	= new $class( array_key_exists( 'param', $options ) && is_array( $options['param'] ) ? $options['param'] : array() );
 		}
 		
 		return self::$userInstance;
@@ -88,7 +88,7 @@ class prestaForumFactory
 
 		if(!(self::$forumInstance instanceof $class))
 		{
-			self::$forumInstance = new $class( array_key_exists( 'param', $options ) ? $options['param'] : array() );
+			self::$forumInstance = new $class( array_key_exists( 'param', $options ) && is_array( $options['param'] ) ? $options['param'] : array() );
 		}
 		
 		return self::$forumInstance;

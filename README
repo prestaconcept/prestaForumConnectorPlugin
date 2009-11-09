@@ -22,6 +22,7 @@ Extending the plugin in order to create a connector to an other user management 
 	    // listen to symfony's clear:cache task's event
 	    $this->dispatcher->connect( 'task.cache.clear', array( 'prestaForumFactory', 'listenToClearCacheEvent' ) );
 	
+  * In /config/database.yml be sure to have a connection for the database that will contain forum's tables (can be the same databse as for the project or a different one).
 	    
   * In /config/app.yml add the following options (and personnalize them for your needs)
 	
@@ -87,6 +88,8 @@ Extending the plugin in order to create a connector to an other user management 
 
 #### Installation
 
+  * Be sure to have sfGuardPlugin installed and configured
+
   * In /config/app.yml define the following option for the userConnector:
 	
 		[plain]
@@ -111,7 +114,6 @@ Extending the plugin in order to create a connector to an other user management 
 	    /**
 		 * Override save method in order to update the forum's user
 		 * 
-		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
 		 * @see		sfGuardPlugin/lib/model/om/BasesfGuardUser#save($con)
 		 * @param	PropelPDO $con	optional connection parameter
 		 * @return	void
@@ -125,7 +127,6 @@ Extending the plugin in order to create a connector to an other user management 
 		/**
 		 * Override delete method in order to update the forum's user
 		 * 
-		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
 		 * @see		sfGuardPlugin/lib/model/plugin/PluginsfGuardUser#delete($con)
 		 * @param	PropelPDO $con	optional connection parameter
 		 * @return	void
@@ -142,6 +143,8 @@ Extending the plugin in order to create a connector to an other user management 
 ### sfGuard - Doctrine version
 
 #### Installation
+
+  * Be sure to have sfDoctrineGuardPlugin installed and configured
 
   * In /config/app.yml define the following option for the userConnector:
 	
@@ -167,7 +170,6 @@ Extending the plugin in order to create a connector to an other user management 
 	    /**
 		 * Override save method in order to update the forum's user
 		 * 
-		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
 		 * @param	Doctrine_Connection $conn	optional connection parameter
 		 * @return	void
 		 */
@@ -180,7 +182,6 @@ Extending the plugin in order to create a connector to an other user management 
 		/**
 		 * Override delete method in order to update the forum's user
 		 * 
-		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
 		 * @param	Doctrine_Connection $conn	optional connection parameter
 		 * @return	void
 		 */

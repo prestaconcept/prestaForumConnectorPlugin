@@ -2,8 +2,8 @@ all:
   prestaForumConnector:
     userConnector:
       class:  prestaSfGuardPropelConnector
-      param: 
-#      parameters for sfGuardPropel
+#      param: 
+#      parameters for sfGuardPropel and sfGuardDoctrine
 #        getUsernameMethod:  getUsername
 #        getEmailMethod:     getEmail
 #        getIsActiveMethod:  getIsActive
@@ -14,7 +14,7 @@ all:
       
     forumConnector:
       class:  prestaPhpBB3Connector
-      param: 
+#      param: 
 #      parameters for phpBB3
 #        forumFieldProjectUserId: project_user_id
         
