@@ -43,8 +43,15 @@ Extending the plugin in order to create a connector to an other user management 
 		    forumWebDir:             <?php echo sfConfig::get('sf_web_dir');?>/forum/ # path to the forum directory 
 		    
 		    forumDatabaseId:        default  # the identifier of the database connection to use for the forum solution as defined in database.yml
-	
-	
+   
+  * If necessary add the following line to .htaccess file
+   
+  		[plain]
+  		RewriteEngine On
+  		
+  		# redirect to the index file if index.php in not present in url for the forum
+  		RewriteRule ^forum/$ forum/index.php [QSA,L]
+  			
   * See the help related to the connectors you use for continuing the installation.
 	
   * Once the connector installation is finished launch the patchForum task, that will patch you're forum solution in order to link it with user mangement system.
@@ -56,7 +63,6 @@ Extending the plugin in order to create a connector to an other user management 
 	
 	    [plain]
 	    ./symfony prestaForumConnectorPlugin:synchUser all --env=dev
-	    
 
 ## Forum Connectors
 
