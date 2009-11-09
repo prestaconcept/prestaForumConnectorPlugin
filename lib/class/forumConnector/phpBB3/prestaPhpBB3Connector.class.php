@@ -18,7 +18,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	public function setup()
 	{
-		global $db, $table_prefix;
+		global $db, $table_prefix, $phpbb_root_path, $phpEx;
 		
 		// define default values
 		$this->params	= array_merge( array(
@@ -61,6 +61,9 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		}
 		$sessionKey 		= '';
 		$phpbbCookieName	= self::getConfigVal('cookie_name');
+		
+		$this->synchUser( $projectUserId );
+		
 		$user_id 			= $this->getForumUserIdFromProjectUserId($projectUserId);
 		$this->insertDbSession($sessionId, $sessionKey, $user_id);
 		$this->setCookies($phpbbCookieName, $sessionId, $sessionKey, $user_id);
@@ -696,14 +699,23 @@ EOF;
 		
 		$min_length = $this->getConfigVal('min_name_chars');
 		$max_length = $this->getConfigVal('max_name_chars');
-
-		while($this->nickNameAlreadyUse($projectNickName, $forumUserId) ||strlen($projectNickName) > $max_length || strlen($projectNickName) < $min_length)
+		
+		if( strlen( $projectNickName ) > $max_length )
 		{
-			if(strlen($projectNickName) > $max_length)
-			{
-				$projectNickName = substr($projectNickName, 0, -3);
-			}
-			$projectNickName .= rand(0,999);
+			$projectNickName	= substr( $projectNickName, 0, $max_length );	
+		}
+		if( strlen( $projectNickName ) < $min_length )
+		{
+			$projectNickName	= str_pad( $projectNickName, $min_length, "0" );	
+		}
+		
+		$baseProjectNickname	= $projectNickName;
+
+		$cpt	= 0;
+		while( $this->nickNameAlreadyUse($projectNickName, $forumUserId) )
+		{
+			$cpt++;
+			$projectNickName	= substr( $baseProjectNickname, 0, $max_length - strlen( $cpt ) ) . $cpt;
 		}
 		return $projectNickName;
 	}
@@ -857,10 +869,21 @@ EOF;
 	 */
 	protected function getConfigVal($name)
 	{
-		$sql 	= "SELECT `config_value` FROM `". $this->dbprefix ."config` WHERE `config_name` LIKE '$name'";
-		$result = $this->sqlExec($sql);
-		$ar 	= $this->db->sql_fetchrow($result);
-		return $ar['config_value'];
+		$fixedConfig	= function_exists('getConfigEnvironment') ? getConfigEnvironment() : array();
+		$result	= null;
+		if( array_key_exists( $name, $fixedConfig ) )
+		{
+			$result		= $fixedConfig[ $name ];
+		}
+		else
+		{
+			$sql 		= "SELECT `config_value` FROM `". $this->dbprefix ."config` WHERE `config_name` LIKE '$name'";
+			$result 	= $this->sqlExec($sql);
+			$ar 		= $this->db->sql_fetchrow($result);
+			$result		= $ar['config_value'];
+		}
+		
+		return $result;
 	}
 
 	/**

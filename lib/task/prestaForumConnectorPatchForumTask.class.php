@@ -8,7 +8,7 @@ class prestaForumConnectorPatchForumTask extends sfBaseTask
 {
 	protected function configure()
 	{
-		$this->namespace	= 'prestaForumConnectorPlugin';
+		$this->namespace	= 'prestaForumConnector';
 		$this->name			= 'patchForum';
 		$this->briefDescription		= 'Patch forum database and file in order to activate correct setup';
 		$this->detailedDescription	= 'Patch forum database and file in order to activate correct setup';

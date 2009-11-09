@@ -8,7 +8,7 @@ class prestaForumConnectorPromoteUserTask extends sfBaseTask
 {
 	protected function configure()
 	{
-		$this->namespace	= 'prestaForumConnectorPlugin';
+		$this->namespace	= 'prestaForumConnector';
 		$this->name			= 'promoteUser';
 		$this->briefDescription		= 'Promote a user as administrator';
 		$this->detailedDescription	= 'Promote a user as administrator';

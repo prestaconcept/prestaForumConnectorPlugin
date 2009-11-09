@@ -4,12 +4,12 @@
  * @author ylybliamay
  *
  */
-class prestaForumConnectorSyncUserTask extends sfBaseTask
+class prestaForumConnectorSynchUserTask extends sfBaseTask
 {
 	protected function configure()
 	{
-		$this->namespace	= 'prestaForumConnectorPlugin';
-		$this->name			= 'syncUser';
+		$this->namespace	= 'prestaForumConnector';
+		$this->name			= 'synchUser';
 		$this->briefDescription		= 'Synchronize users between the project and the forum';
 		$this->detailedDescription	= 'Synchronize users between the project and the forum';
 		
