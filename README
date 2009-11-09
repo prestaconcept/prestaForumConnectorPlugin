@@ -1,0 +1,193 @@
+# prestaForumConnectorPlugin
+
+The prestaForumConnectorPlugin aims to provide an easy way to connect an user management system to a forum solution of your choice.
+Just choose the connectors of you choice for the user management system on one part and for the forum solution, follow the install instructions and you will be able to use the same user database and the same login process.
+
+For example, this will allow you to connect sfGuard to phpBB3. Currently only sfGuard ( Propel or Doctrine versions) and phpBB3 are supported. More will come.
+
+Extending the plugin in order to create a connector to an other user management system can be done very quickly.
+
+## Installation
+
+  * Install the plugin
+  
+	    [plain]
+	    ./symfony plugin:install prestaForumConnectorPlugin
+	    ./symfony cc
+	
+		
+  * In /config/ProjectConfiguration.class.php in setup method add a connector to the clear:cache task event in order to clear forum cache when clearing project's cache
+	
+	    [php]
+	    // listen to symfony's clear:cache task's event
+	    $this->dispatcher->connect( 'task.cache.clear', array( 'prestaForumFactory', 'listenToClearCacheEvent' ) );
+	
+	    
+  * In /config/app.yml add the following options (and personnalize them for your needs)
+	
+	    [yaml]
+	    all:
+		  prestaForumConnector:
+		    userConnector:
+		      class:  presta%%UsedUserConnectorName%%Connector	# the name of the connector to use (here we use sfGuardPropel as user management tools)
+		      param:
+		      	# for the required parameters see the help related to the connector that you're using 
+		      
+		    forumConnector:
+		      class:  presta%%UsedForumConnectorName%%Connector  # the name of the connector to use (here we use phpBB3 as forum platform tools)
+		      param: 
+		        # for the required parameters see the help related to the connector that you're using
+		       
+		    forumWebDir:             <?php echo sfConfig::get('sf_web_dir');?>/forum/ # path to the forum directory 
+		    
+		    forumDatabaseId:        default  # the identifier of the database connection to use for the forum solution as defined in database.yml
+	
+	
+  * See the help related to the connectors you use for continuing the installation.
+	
+  * Once the connector installation is finished launch the patchForum task, that will patch you're forum solution in order to link it with user mangement system.
+	
+	    [plain]
+	    ./symfony prestaForumConnectorPlugin:patchForum frontend --env=dev
+	
+  * Once this task is finished and has succeed, you can synchronize your user database.
+	
+	    [plain]
+	    ./symfony prestaForumConnectorPlugin:synchUser all --env=dev
+	    
+
+## Forum Connectors
+
+### PHPBB3
+
+#### Installation
+  
+  * In /config/app.yml define the following options for the forumConnector
+  
+  		[plain]
+		all:
+		  prestaForumConnector:
+  		    forumConnector:
+		      class:  prestaPhpBB3Connector
+
+  * Copy all the forum files inside you're web directory (eg: /web/forum/)
+  
+  * Commit your project, in order to have an original version of you're forum code.
+  
+  * Access to the forum in you're navigator and follow the installation instruction of phpBB3.
+  
+  * Commit your project again, in order to have the freshly installed version of you're forum code.
+  
+  * Delete the phpBB3's "install" directory and commit again you're project.
+  
+  
+## User Connectors
+
+### sfGuard - Propel version
+
+#### Installation
+
+  * In /config/app.yml define the following option for the userConnector:
+	
+		[plain]
+		all:
+		  prestaForumConnector:
+		    userConnector:
+		      class:  prestaSfGuardPropelConnector
+		      param: 
+		        getUsernameMethod:  getUsername	# define here the name of the sfGuardUser's method to use for retrieving the username
+		        getEmailMethod:     getEmail	# define here the name of the sfGuardUser's method to use for retrieving the email. Can be getUsername if the username is the email. If needed create yourself this method if the email is stored in another table like the profile table.
+	        
+  * Change the parent class in `myUser.class.php`
+
+        [php]
+        class myUser extends prestaForumConnectorSfGuardPropelSecurityUser
+        {
+        }	 
+        
+  * Add the following methods to sfGuardUser.php in order to synchronize forum's users when sfGuard's users are updated
+  
+        [php]
+	    /**
+		 * Override save method in order to update the forum's user
+		 * 
+		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
+		 * @see		sfGuardPlugin/lib/model/om/BasesfGuardUser#save($con)
+		 * @param	PropelPDO $con	optional connection parameter
+		 * @return	void
+		 */
+		public function save(PropelPDO $con = null)
+		{
+			parent::save($con);
+			prestaForumFactory::getForumConnectorInstance()->synchUser( $this->getId() );
+		}
+		
+		/**
+		 * Override delete method in order to update the forum's user
+		 * 
+		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
+		 * @see		sfGuardPlugin/lib/model/plugin/PluginsfGuardUser#delete($con)
+		 * @param	PropelPDO $con	optional connection parameter
+		 * @return	void
+		 */
+		public function delete(PropelPDO $con = null)
+		{
+			$userId = $this->getId();
+			parent::delete($con);
+			prestaForumFactory::getForumConnectorInstance()->deleteForumUser( $userId );
+		}
+
+
+
+### sfGuard - Doctrine version
+
+#### Installation
+
+  * In /config/app.yml define the following option for the userConnector:
+	
+		[plain]
+		all:
+		  prestaForumConnector:
+		    userConnector:
+		      class:  prestaSfGuardDoctrineConnector
+		      param: 
+		        getUsernameMethod:  getUsername	# define here the name of the sfGuardUser's method to use for retrieving the username
+		        getEmailMethod:     getEmail	# define here the name of the sfGuardUser's method to use for retrieving the email. Can be getUsername if the username is the email. If needed create yourself this method if the email is stored in another table like the profile table.
+	        
+  * Change the parent class in `myUser.class.php`
+
+        [php]
+        class myUser extends prestaForumConnectorSfGuardDoctrineSecurityUser
+        {
+        }	 
+        
+  * Add the following methods to sfGuardUser.php in order to synchronize forum's users when sfGuard's users are updated
+  
+        [php]
+	    /**
+		 * Override save method in order to update the forum's user
+		 * 
+		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
+		 * @param	Doctrine_Connection $conn	optional connection parameter
+		 * @return	void
+		 */
+    	public function save(Doctrine_Connection $conn = null)
+    	{
+    		parent::save( $conn );
+			prestaForumFactory::getForumConnectorInstance()->synchUser( $this->getId() );
+		} 
+		
+		/**
+		 * Override delete method in order to update the forum's user
+		 * 
+		 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
+		 * @param	Doctrine_Connection $conn	optional connection parameter
+		 * @return	void
+		 */
+		public function delete(Doctrine_Connection $conn = null)
+		{
+			$userId	= $this->getId();
+			parent::delete( $conn );
+			prestaForumFactory::getForumConnectorInstance()->deleteForumUser( $userId );
+		}
+

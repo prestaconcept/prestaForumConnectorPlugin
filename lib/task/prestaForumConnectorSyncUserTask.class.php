@@ -29,6 +29,8 @@ class prestaForumConnectorSyncUserTask extends sfBaseTask
 		$start_time	= microtime( true );
 		$this->logSection( 'syncUser', 'Start '.date('Y-m-d H:i:s') );
 		
+		$databaseManager = new sfDatabaseManager($this->configuration);
+		
 		if($arguments['userId'] == 'all')
 		{
 			$results = prestaForumFactory::getUserConnectorInstance()->getAllUserId();

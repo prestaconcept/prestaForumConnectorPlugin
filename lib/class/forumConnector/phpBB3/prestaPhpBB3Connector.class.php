@@ -19,6 +19,17 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	public function setup()
 	{
 		global $db, $table_prefix;
+		
+		// define default values
+		$this->params	= array_merge( array(
+			'forumFieldProjectUserId'		=> 'project_user_id',
+		), $this->params );
+		
+		
+		// *************
+		// *** Init phpBB3
+		// *************
+		
 		if( !defined( 'IN_PHPBB' ) )
 		{
 			define('IN_PHPBB', true);
@@ -30,6 +41,8 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 
 		$this->db		= $db;
 		$this->dbprefix	= $table_prefix;
+		
+		// *************
 	}
 
 	/**
@@ -254,7 +267,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 			$this->setConfigVal('newest_user_colour', $row[0]['group_colour'], true);
 		}
 		
-		if(!prestaForumFactory::getUserConnectorInstance()->getUserEnabled($projectUserId))
+		if(!prestaForumFactory::getUserConnectorInstance()->isUserEnabled($projectUserId))
 		{
 			$this->disableForumUser($projectUserId);
 		}
@@ -282,7 +295,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 				. "WHERE `user_id` = ". $forum_user_id;
 		$this->sqlExec($sql);
 
-		$enabled = prestaForumFactory::getUserConnectorInstance()->getUserEnabled($projectUserId);
+		$enabled = prestaForumFactory::getUserConnectorInstance()->isUserEnabled($projectUserId);
 		if($enabled)
 		{
 			$this->enableForumUser($projectUserId);
@@ -303,7 +316,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	public function patchForum( sfBaseTask $sfTask )
 	{
 		// Set general config
-		$this->patchSetGeneralConfig( $sfTask );
+		$this->patchGeneralConfig( $sfTask );
 		
 		// Add the custom data in order to create a link between project and forum database
 		$this->patchAddCustomField( $sfTask );
@@ -558,7 +571,7 @@ EOF;
 	 * @version	1.0 - 2009-10-30 - ylybliamay
 	 * @since	1.0 - 2009-10-30 - ylybliamay
 	 */
-	protected function patchSetGeneralConfig( sfBaseTask $sfTask )
+	protected function patchGeneralConfig( sfBaseTask $sfTask )
 	{
 		$search		= null;
 		$replace	= <<<EOF
@@ -605,7 +618,7 @@ if( \$instanceCreated )
 }
 
 \$databaseManager	= new sfDatabaseManager( \$configuration );
-\$sfPropelDatabase 	= \$databaseManager->getDatabase('propel');
+\$sfPropelDatabase 	= \$databaseManager->getDatabase( sfConfig::get('app_prestaForumConnector_forumDatabaseId' ) );
 
 \$dsn = \$sfPropelDatabase->getParameter('dsn');
 \$dsn = explode(':',\$dsn);

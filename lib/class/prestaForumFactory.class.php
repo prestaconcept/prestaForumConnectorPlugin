@@ -20,7 +20,7 @@ class prestaForumFactory
 	public static function getUserConnectorInstance()
 	{
 		$options = sfConfig::get( 'app_prestaForumConnector_userConnector' );
-
+		
 		$class = $options['class'];
 
 		if(!(self::$userInstance instanceof $class) )

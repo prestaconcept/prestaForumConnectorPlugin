@@ -6,6 +6,24 @@
  */
 abstract class prestaAbstractUserConnector
 {
+	protected $params	= array();
+	
+	/**
+	 * Constructor
+	 * Call the setup function
+	 */
+	public function __construct( Array $params = array() )
+	{
+		$this->params	= $params;
+		$this->setup();
+	}
+	
+	/**
+	 * Set the general configuration
+	 * @abstract
+	 */
+	abstract public function setup();
+	
 	/**
 	 * Get user nickname
 	 * @param 	$projectUserId
@@ -32,7 +50,7 @@ abstract class prestaAbstractUserConnector
 	 * @param 	$projectUserId
 	 * @return 	boolean
 	 */
-	abstract public function getUserEnabled($projectUserId);
+	abstract public function isUserEnabled($projectUserId);
 	
 	/**
 	 * Get the current user id

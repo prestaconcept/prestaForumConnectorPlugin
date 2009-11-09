@@ -29,6 +29,8 @@ class prestaForumConnectorPromoteUserTask extends sfBaseTask
 		$start_time	= microtime( true );
 		$this->logSection( 'promoteUser', 'Start '.date('Y-m-d H:i:s') );
 		
+		$databaseManager = new sfDatabaseManager($this->configuration);
+		
 		$result	= prestaForumFactory::getForumConnectorInstance()->promoteUserAsAdmin( $this, $arguments['userId'] );
 		$this->logSection( 'promoteUser', $arguments['userId'], null, $result ? 'INFO' : 'ERROR' );
 		

@@ -1,10 +1,10 @@
 <?php
 /**
  * prestaSfGuardPropelConnector is the user connector for sfGuardPropel
- * @author ylybliamay
+ * @author cdolivet
  *
  */
-class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
+class prestaSfGuardDoctrineConnector extends prestaAbstractUserConnector
 {
 	
 	/**
@@ -13,7 +13,7 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
 	 * @version	1.0 - 6 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
 	 * @since	6 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
-	 * @see prestaForumConnectorPlugin/lib/class/userConnector/prestaAbstractUserConnector#setup()
+	 * @see		prestaForumConnectorPlugin/lib/class/userConnector/prestaAbstractUserConnector#setup()
 	 */
 	public function setup()
 	{
@@ -36,7 +36,7 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	 */
 	public function getUserNickName($projectUserId)
 	{
-		$user 		= sfGuardUserPeer::retrieveByPK($projectUserId);
+		$user		= Doctrine::getTable('sfGuardUser')->find($projectUserId);
 		return call_user_func( array( $user, $this->params['getUsernameMethod'] ) );
 	}
 	
@@ -47,7 +47,7 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	 */
 	public function getUserEmail($projectUserId)
 	{
-		$user		= sfGuardUserPeer::retrieveByPK( $projectUserId );
+		$user		= Doctrine::getTable('sfGuardUser')->find($projectUserId);
 		return call_user_func( array( $user, $this->params['getEmailMethod'] ) );
 	}
 	
@@ -70,7 +70,7 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	 */
 	public function isUserEnabled($projectUserId)
 	{
-		$user = sfGuardUserPeer::retrieveByPK($projectUserId);
+		$user		= Doctrine::getTable('sfGuardUser')->find($projectUserId);
 		return call_user_func( array( $user, $this->params['getIsActiveMethod'] ) );
 	}
 	
@@ -99,25 +99,18 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	}
 	
 	/**
-	 * Get all user id
-	 * @author	ylybliamay
-	 * @version	1.0 - 2009-10-28 - ylybliamay
-	 * @since	1.0 - 2009-10-28 - ylybliamay
-	 * @return	array
+	 * Get all user's id
+	 * 
+	 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
+	 * @version	1.0 - 9 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
+	 * @since	9 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
+	 * @return	Array of user ids
 	 */
 	public function getAllUserId()
 	{
-		$c = new Criteria();
-		$c->clearSelectColumns();
-		$c->addSelectColumn(sfGuardUserPeer::ID);
-
-		$stmt = sfGuardUserPeer::doSelectStmt($c);
-		
-		$result = array();
-		while($row = $stmt->fetch(PDO::FETCH_NUM))
-		{
-			$result[] = $row[0];
-		}
-		return $result;
+		$q	= Doctrine::getTable('sfGuardUser')->createQuery('u')->select('u.id');
+		$a_userIds = $q->execute();
+			var_dump( $a_userIds );die;
+		return $a_userIds;
 	}
 }

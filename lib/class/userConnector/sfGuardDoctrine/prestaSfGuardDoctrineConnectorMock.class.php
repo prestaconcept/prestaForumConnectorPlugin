@@ -1,10 +1,10 @@
 <?php
 /**
  * Mock Class used for unit tests
- * @author ylybliamay
+ * @author cdolivet
  *
  */
-class prestaSfGuardPropelConnectorMock extends prestaSfGuardPropelConnector implements prestaUserConnectorMockInterface
+class prestaSfGuardDoctrineConnectorMock extends prestaSfGuardDoctrineConnector implements prestaUserConnectorMockInterface
 {
 	/**
 	 * Add a user
