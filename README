@@ -15,7 +15,8 @@ Extending the plugin in order to create a connector to an other user management 
 	    [plain]
 	    ./symfony plugin:install prestaForumConnectorPlugin
 	    ./symfony cc
-	
+	    
+  * Be sure to have the plugin enabled in /config/ProjectConfiguration.class.php
 		
   * In /config/ProjectConfiguration.class.php in setup method add a connector to the clear:cache task event in order to clear forum cache when clearing project's cache
 	
@@ -32,23 +33,21 @@ Extending the plugin in order to create a connector to an other user management 
 		  prestaForumConnector:
 		    userConnector:
 		      class:  presta%%UsedUserConnectorName%%Connector	# the name of the connector to use (here we use sfGuardPropel as user management tools)
-		      param:
+		      # param:
 		      	# for the required parameters see the help related to the connector that you're using 
 		      
 		    forumConnector:
 		      class:  presta%%UsedForumConnectorName%%Connector  # the name of the connector to use (here we use phpBB3 as forum platform tools)
-		      param: 
+		      # param: 
 		        # for the required parameters see the help related to the connector that you're using
 		       
 		    forumWebDir:             <?php echo sfConfig::get('sf_web_dir');?>/forum/ # path to the forum directory 
 		    
 		    forumDatabaseId:        default  # the identifier of the database connection to use for the forum solution as defined in database.yml
    
-  * If necessary add the following line to .htaccess file
+  * If necessary add the following line to .htaccess file under the "RewriteEngine On" line
    
   		[plain]
-  		RewriteEngine On
-  		
   		# redirect to the index file if index.php in not present in url for the forum
   		RewriteRule ^forum/$ forum/index.php [QSA,L]
   			
@@ -57,12 +56,12 @@ Extending the plugin in order to create a connector to an other user management 
   * Once the connector installation is finished launch the patchForum task, that will patch you're forum solution in order to link it with user mangement system.
 	
 	    [plain]
-	    ./symfony prestaForumConnectorPlugin:patchForum frontend --env=dev
+	    ./symfony prestaForumConnector:patchForum frontend --env=dev
 	
   * Once this task is finished and has succeed, you can synchronize your user database.
 	
 	    [plain]
-	    ./symfony prestaForumConnectorPlugin:synchUser all --env=dev
+	    ./symfony prestaForumConnector:synchUser frontend all --env=dev
 
 ## Forum Connectors
 
@@ -77,10 +76,25 @@ Extending the plugin in order to create a connector to an other user management 
 		  prestaForumConnector:
   		    forumConnector:
 		      class:  prestaPhpBB3Connector
+		      
+  * In /web/index.php Replace
+    	
+    	[php]
+    	sfContext::createInstance($configuration)->dispatch();
+    	
+    With
+    
+    	[php]
+		if(!defined('SYMFONY_FORUM'))
+		{
+			sfContext::createInstance($configuration)->dispatch();
+		}
 
   * Copy all the forum files inside you're web directory (eg: /web/forum/)
   
   * Commit your project, in order to have an original version of you're forum code.
+  
+  * Add svn:ignore * (or similar command for your versionning tool) to "/cache/", "/files/", "/store/" and "/images/avatars/upload/" forum's sub-directories
   
   * Access to the forum in you're navigator and follow the installation instruction of phpBB3.
   
@@ -88,6 +102,18 @@ Extending the plugin in order to create a connector to an other user management 
   
   * Delete the phpBB3's "install" directory and commit again you're project.
   
+  
+#### Usage
+
+##### Promote a user as super admin
+
+In order to promote a user as a super admin, launch the following task once everything has be installed. The user id given here is the user ID of the user management tools 
+
+	[plain]
+	./symfony prestaForumConnector:promoteUser frontend %userIdToPromote% --env=dev
+
+
+
   
 ## User Connectors
 
