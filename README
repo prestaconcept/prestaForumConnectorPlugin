@@ -24,9 +24,9 @@ Extending the plugin in order to create a connector to an other user management 
 	    // listen to symfony's clear:cache task's event
 	    $this->dispatcher->connect( 'task.cache.clear', array( 'prestaForumFactory', 'listenToClearCacheEvent' ) );
 	
-  * In /config/database.yml be sure to have a connection for the database that will contain forum's tables (can be the same databse as for the project or a different one).
+  * In /config/database.yml be sure to have a connection for the database that will contain forum's tables (can be the same database as for the project or a different one).
 	    
-  * In /config/app.yml add the following options (and personnalize them for your needs)
+  * In /config/app.yml add the following options (and personalize them for your needs)
 	
 	    [yaml]
 	    all:
@@ -53,7 +53,7 @@ Extending the plugin in order to create a connector to an other user management 
   			
   * See the help related to the connectors you use for continuing the installation.
 	
-  * Once the connector installation is finished launch the patchForum task, that will patch you're forum solution in order to link it with user mangement system.
+  * Once the connector installation is finished launch the patchForum task, that will patch you're forum solution in order to link it with user management system.
 	
 	    [plain]
 	    ./symfony prestaForumConnector:patchForum frontend --env=dev
