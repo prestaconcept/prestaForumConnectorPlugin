@@ -131,11 +131,7 @@ abstract class prestaAbstractForumConnector
 	 */
 	abstract public function enableForumUser($projectUserId);
 	
-	/**
-	 * Patch the forum database, configuration and file
-	 * @return	boolean
-	 */
-	abstract public function patchForum( sfBaseTask $sfTask );
+	
 	
 	/**
 	 * Convert a nickname to a valid nickname

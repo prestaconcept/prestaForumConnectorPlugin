@@ -20,6 +20,7 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 		$this->params	= array_merge( array(
 			'getUsernameMethod'		=> 'getUsername',
 			'getEmailMethod'		=> 'getEmail',
+			'getCultureMethod'		=> 'getCulture',
 			'getIsActiveMethod'		=> 'getIsActive',
  			'setUsernameMethod'		=> 'setUsername',
 			'setEmailMethod'		=> 'setUsername',
@@ -47,8 +48,7 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	 */
 	public function getUserEmail($projectUserId)
 	{
-		$user		= sfGuardUserPeer::retrieveByPK( $projectUserId );
-		return call_user_func( array( $user, $this->params['getEmailMethod'] ) );
+		
 	}
 	
 	/*
@@ -58,9 +58,8 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	 */
 	public function getUserCulture($projectUserId)
 	{
-		/**
-		 * TODO
-		 */
+		$user		= sfGuardUserPeer::retrieveByPK( $projectUserId );
+		return call_user_func( array( $user, $this->params['getCultureMethod'] ) );
 	}
 	
 	/*

@@ -133,6 +133,7 @@ In order to promote a user as a super admin, launch the following task once ever
 		      param: 
 		        getUsernameMethod:  getUsername	# define here the name of the sfGuardUser's method to use for retrieving the username
 		        getEmailMethod:     getEmail	# define here the name of the sfGuardUser's method to use for retrieving the email. Can be getUsername if the username is the email. If needed create yourself this method if the email is stored in another table like the profile table.
+		        getCultureMethod:   getCulture	# define here the name of the sfGuardUser's method to use for retrieving the user's preferred culture. If needed create yourself this method if the culture is stored in another table like the profile table or if it is a constant.
 	        
   * Change the parent class in `myUser.class.php`
 
@@ -189,6 +190,7 @@ In order to promote a user as a super admin, launch the following task once ever
 		      param: 
 		        getUsernameMethod:  getUsername	# define here the name of the sfGuardUser's method to use for retrieving the username
 		        getEmailMethod:     getEmail	# define here the name of the sfGuardUser's method to use for retrieving the email. Can be getUsername if the username is the email. If needed create yourself this method if the email is stored in another table like the profile table.
+		        getCultureMethod:   getCulture	# define here the name of the sfGuardUser's method to use for retrieving the user's preferred culture. If needed create yourself this method if the culture is stored in another table like the profile table or if it is a constant.
 	        
   * Change the parent class in `myUser.class.php`
 

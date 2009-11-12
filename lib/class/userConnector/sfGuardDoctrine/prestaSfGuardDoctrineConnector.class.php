@@ -21,6 +21,7 @@ class prestaSfGuardDoctrineConnector extends prestaAbstractUserConnector
 			'getUsernameMethod'		=> 'getUsername',
 			'getEmailMethod'		=> 'getEmail',
 			'getIsActiveMethod'		=> 'getIsActive',
+			'getCultureMethod'		=> 'getCulture',
  			'setUsernameMethod'		=> 'setUsername',
 			'setEmailMethod'		=> 'setUsername',
 			'setPasswordlMethod'	=> 'setPassword',
@@ -58,9 +59,8 @@ class prestaSfGuardDoctrineConnector extends prestaAbstractUserConnector
 	 */
 	public function getUserCulture($projectUserId)
 	{
-		/**
-		 * TODO
-		 */
+		$user		= Doctrine::getTable('sfGuardUser')->find($projectUserId);
+		return call_user_func( array( $user, $this->params['getCultureMethod'] ) );
 	}
 	
 	/*

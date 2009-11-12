@@ -19,9 +19,8 @@ class prestaForumFactory
 	 */
 	public static function getUserConnectorInstance()
 	{
-		$options = sfConfig::get( 'app_prestaForumConnector_userConnector' );
-		
-		$class = $options['class'];
+		$options	= sfConfig::get( 'app_prestaForumConnector_userConnector' );
+		$class		= $options['class'];
 
 		if(!(self::$userInstance instanceof $class) )
 		{
@@ -40,9 +39,28 @@ class prestaForumFactory
 	 */
 	public static function getForumConnectorInstance()
 	{
-		$options = sfConfig::get( 'app_prestaForumConnector_forumConnector' );
+		$options	= sfConfig::get( 'app_prestaForumConnector_forumConnector' );
+		$class		= $options['class'];
+
+		if(!(self::$forumInstance instanceof $class))
+		{
+			self::$forumInstance = new $class( array_key_exists( 'param', $options ) && is_array( $options['param'] ) ? $options['param'] : array() );
+		}
 		
-		$class = $options['class'];
+		return self::$forumInstance;
+	}
+	
+	/**
+	 * Get the forum connector instance
+	 * @author	ylybliamay
+	 * @version	1.0 - 2009-10-26 - ylybliamay
+	 * @since	1.0 - 2009-10-26 - ylybliamay
+	 * @return	sfContext
+	 */
+	public static function getForumPatcherConnectorInstance()
+	{
+		$options	= sfConfig::get( 'app_prestaForumConnector_forumConnector' );
+		$class		= $options['class'].'Patcher';
 
 		if(!(self::$forumInstance instanceof $class))
 		{
@@ -61,9 +79,8 @@ class prestaForumFactory
 	 */
 	public static function getMockUserConnectorInstance()
 	{
-		$options = sfConfig::get( 'app_prestaForumConnector_userConnector' );
-
-		$class = $options['class'].'Mock';
+		$options	= sfConfig::get( 'app_prestaForumConnector_userConnector' );
+		$class		= $options['class'].'Mock';
 
 		if(!(self::$userInstance instanceof $class) )
 		{
@@ -82,9 +99,8 @@ class prestaForumFactory
 	 */
 	public static function getMockForumConnectorInstance()
 	{
-		$options = sfConfig::get( 'app_prestaForumConnector_forumConnector' );
-		
-		$class = $options['class'].'Mock';
+		$options	= sfConfig::get( 'app_prestaForumConnector_forumConnector' );
+		$class		= $options['class'].'Mock';
 
 		if(!(self::$forumInstance instanceof $class))
 		{

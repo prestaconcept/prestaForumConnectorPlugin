@@ -46,8 +46,10 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 			<file role="data" name="config/config.php" />
 			<file role="data" name="lib/class/forumConnector/prestaAbstractForumConnector.class.php" />
 			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3ConnectorMock.class.php" />
+			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3ConnectorPatcher.class.php" />
 			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3Connector.class.php" />
 			<file role="data" name="lib/class/forumConnector/prestaForumConnectorMockInterface.php" />
+			<file role="data" name="lib/class/forumConnector/prestaForumConnectorPatcherInterface.php" />
 			<file role="data" name="lib/class/userConnector/prestaUserConnectorMockInterface.php" />
 			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaSfGuardDoctrineConnectorMock.class.php" />
 			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaSfGuardDoctrineConnector.class.php" />

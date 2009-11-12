@@ -31,7 +31,7 @@ class prestaForumConnectorPatchForumTask extends sfBaseTask
 		$databaseManager = new sfDatabaseManager($this->configuration);
 
 		// launch patch process
-		prestaForumFactory::getForumConnectorInstance()->patchForum( $this );
+		prestaForumFactory::getForumPatcherConnectorInstance()->patchForum( $this );
 		
 		$this->logSection( 'patchForum', 'End '.date('Y-m-d H:i:s') .' ( Total: '. round( ( microtime(true) - $start_time ), 2) .' s )' );
 	}
