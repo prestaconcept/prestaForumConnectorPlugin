@@ -416,5 +416,24 @@ EOF;
 		$this->searchAndReplace( $search, $replace, $this->phpbb_root_path.'includes/cache.php', $sfTask );
 		
 		// *************
+		
+		
+		// *************
+		// *** Upgrade admin rights
+		// *************
+		
+		
+		// Check if line already exist
+		$sql = "SELECT * FROM `".$this->dbprefix."acl_groups` WHERE `group_id` = 5 AND `forum_id` = 0 AND `auth_option_id`=0 AND `auth_role_id`=4 AND `auth_setting`=0";
+		$result = $this->sqlExec($sql);
+		$exist	= mysql_num_rows($result);
+		if(!$exist)
+		{
+			$sql = "INSERT INTO  `". $this->dbprefix ."acl_groups` (`group_id`, `forum_id`, `auth_option_id`, `auth_role_id`, `auth_setting`) VALUES ('5', '0', '0', '4', '0')";
+			$succeed	= $this->sqlExec($sql);
+		}
+		$sfTask->logSection( 'Database', 'Upgrade admin rights', null, $exist || $succeed ? 'INFO' : 'ERROR' );
+		
+		// *************
 	}
 }
