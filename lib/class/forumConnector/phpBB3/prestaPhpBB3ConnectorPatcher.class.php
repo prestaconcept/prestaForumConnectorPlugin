@@ -187,45 +187,29 @@ EOF;
 		// *************
 		// *** disable login body page
 		// *************
-		
-		$search	= <<<EOF
-		<fieldset <!-- IF not S_CONFIRM_CODE -->class="fields1"<!-- ELSE -->class="fields2"<!-- ENDIF -->>
-		<!-- IF LOGIN_ERROR --><div class="error">{LOGIN_ERROR}</div><!-- ENDIF -->
-		<dl>
-			<dt><label for="{USERNAME_CREDENTIAL}">{L_USERNAME}:</label></dt>
-			<dd><input type="text" tabindex="1" name="{USERNAME_CREDENTIAL}" id="{USERNAME_CREDENTIAL}" size="25" value="{USERNAME}" class="inputbox autowidth" /></dd>
-		</dl>
-		<dl>
-			<dt><label for="{PASSWORD_CREDENTIAL}">{L_PASSWORD}:</label></dt>
-			<dd><input type="password" tabindex="2" id="{PASSWORD_CREDENTIAL}" name="{PASSWORD_CREDENTIAL}" size="25" class="inputbox autowidth" /></dd>
-			<!-- IF S_DISPLAY_FULL_LOGIN and (U_SEND_PASSWORD or U_RESEND_ACTIVATION) -->
-				<!-- IF U_SEND_PASSWORD --><dd><a href="{U_SEND_PASSWORD}">{L_FORGOT_PASS}</a></dd><!-- ENDIF -->
-				<!-- IF U_RESEND_ACTIVATION --><dd><a href="{U_RESEND_ACTIVATION}">{L_RESEND_ACTIVATION}</a></dd><!-- ENDIF -->
-			<!-- ENDIF -->
-		</dl>
-		
-		<!-- IF S_CONFIRM_CODE -->
-		<dl>
-			<dt><label for="confirm_code">{L_CONFIRM_CODE}:</label><br /><span>{L_CONFIRM_CODE_EXPLAIN}</span></dt>
-				<dd><input type="hidden" name="confirm_id" value="{CONFIRM_ID}" />{CONFIRM_IMAGE}</dd>
-				<dd><input type="text" name="confirm_code" id="confirm_code" size="8" maxlength="8" tabindex="3" class="inputbox narrow" title="{L_CONFIRM_CODE}" /></dd>
-		</dl>
-		<!-- ENDIF -->
-		
-		<!-- IF S_DISPLAY_FULL_LOGIN -->
-		<dl>
-			<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" tabindex="4" /> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
-			<dd><label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="5" /> {L_HIDE_ME}</label></dd>
-		</dl>
-		<!-- ENDIF -->
-		<dl>
-			<dt>&nbsp;</dt>
-			<dd>{S_HIDDEN_FIELDS}<input type="submit" name="login" tabindex="6" value="{L_LOGIN}" class="button1" /></dd>
-		</dl>
 	
-		</fieldset>
+$search	= <<<EOF
+		<h2><!-- IF LOGIN_EXPLAIN -->{LOGIN_EXPLAIN}<!-- ELSE -->{L_LOGIN}<!-- ENDIF --></h2>
+		
+		<fieldset <!-- IF not S_CONFIRM_CODE -->class="fields1"<!-- ELSE -->class="fields2"<!-- ENDIF -->>
 EOF;
-		$this->searchAndReplace( $search, '<!-- /* form removed */ -->', $this->phpbb_root_path.'styles/prosilver/template/login_body.html', $sfTask );
+$replace	= <<<EOF
+		<h2><!-- IF LOGIN_EXPLAIN -->{LOGIN_EXPLAIN}<!-- ELSE -->{L_LOGIN}<!-- ENDIF --></h2>	
+	<!-- IF S_ADMIN_AUTH  -->
+		<fieldset <!-- IF not S_CONFIRM_CODE -->class="fields1"<!-- ELSE -->class="fields2"<!-- ENDIF -->>
+EOF;
+		$this->searchAndReplace( $search, $replace, $this->phpbb_root_path.'styles/prosilver/template/login_body.html', $sfTask );
+		
+$search	= <<<EOF
+		</fieldset>
+	</div>
+EOF;
+$replace	= <<<EOF
+		</fieldset>
+	<!-- ENDIF -->	
+	</div>
+EOF;
+		$this->searchAndReplace( $search, $replace, $this->phpbb_root_path.'styles/prosilver/template/login_body.html', $sfTask );		
 		
 		// *************		
 		
