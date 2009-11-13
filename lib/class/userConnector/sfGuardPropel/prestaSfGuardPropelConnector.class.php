@@ -48,7 +48,8 @@ class prestaSfGuardPropelConnector extends prestaAbstractUserConnector
 	 */
 	public function getUserEmail($projectUserId)
 	{
-		
+		$user 		= sfGuardUserPeer::retrieveByPK($projectUserId);
+		return call_user_func( array( $user, $this->params['getEmailMethod'] ) );
 	}
 	
 	/*
