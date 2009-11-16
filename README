@@ -90,7 +90,7 @@ Extending the plugin in order to create a connector to an other user management 
 			sfContext::createInstance($configuration)->dispatch();
 		}
 
-  * Copy all the forum files inside you're web directory (eg: /web/forum/)
+  * Copy all the forum files inside you're web directory (eg: /web/forum/). Use here the name that will appears in the URL (no .htacess redirection on directory name are actually possible).
   
   * Commit your project, in order to have an original version of you're forum code.
   

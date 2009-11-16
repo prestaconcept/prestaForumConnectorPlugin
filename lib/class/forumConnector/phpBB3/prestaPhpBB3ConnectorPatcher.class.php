@@ -315,9 +315,10 @@ EOF;
  */
 function getConfigEnvironment()
 {
-	\$result['server_name']	= array_key_exists('HTTP_HOST',\$_SERVER)	? \$_SERVER['HTTP_HOST'] : '';
-	\$result['script_path']	= array_key_exists('PHP_SELF',\$_SERVER) 	? substr(\$_SERVER['PHP_SELF'],0,strpos(\$_SERVER['PHP_SELF'],'phpBB3') + 6) : '';
-	\$result['cookie_domain']= array_key_exists('HTTP_HOST',\$_SERVER) 	? \$_SERVER['HTTP_HOST'] : '';
+	\$currentDir				= preg_replace('@^(.*?)/([^/]*)$@', '$2', dirname(__FILE__) );
+	\$result['script_path']		= array_key_exists('REQUEST_URI',\$_SERVER) 	? substr(\$_SERVER['REQUEST_URI'],0,strpos(\$_SERVER['REQUEST_URI'], \$currentDir) + strlen( \$currentDir )) : '';
+	\$result['server_name']		= array_key_exists('HTTP_HOST',\$_SERVER)	? \$_SERVER['HTTP_HOST'] : '';
+	\$result['cookie_domain']	= array_key_exists('HTTP_HOST',\$_SERVER) 	? \$_SERVER['HTTP_HOST'] : '';
 	return \$result;
 }
 
