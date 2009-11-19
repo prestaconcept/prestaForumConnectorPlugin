@@ -602,7 +602,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		{
 			$groupId	= $ar['group_id'];
 			// update password and define user as fondator
-			if( $this->sqlExec( "UPDATE `". $this->dbprefix ."users` SET group_id = '". $groupId ."', user_password='". phpbb_hash( $password ) ."', `user_type` = '3' WHERE user_id = '". $forumUserId ."'") )
+			if( $this->sqlExec( "UPDATE `". $this->dbprefix ."users` SET group_id = '". $groupId ."', user_password='". phpbb_hash( $password ) ."' WHERE user_id = '". $forumUserId ."'") )
 			{
 				$result = $this->sqlExec( "SELECT * FROM `". $this->dbprefix ."user_group` WHERE group_id = '". $groupId ."' AND user_id = '". $forumUserId ."'" );
 				$ar 	= $this->db->sql_fetchrow($result);
