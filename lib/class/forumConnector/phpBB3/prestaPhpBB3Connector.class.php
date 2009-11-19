@@ -591,6 +591,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		
 		$password		= $sfTask->ask( "Please enter user's password" );
 		
+		$isFoundator	= $sfTask->askConfirmation( "Is this the foundator user ? (Y/N)", 'QUESTION', false );
 		
 		// ensute the user is synched
 		$this->synchUser( $projectUserId );
@@ -600,10 +601,16 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		$ar 	= $this->db->sql_fetchrow($result);
 		if( is_array($ar) && array_key_exists('group_id', $ar ) )
 		{
-			$groupId	= $ar['group_id'];
+			$groupId		= $ar['group_id'];
+			$newUserType	= $isFoundator ? ", user_type='3' " : "";
 			// update password and define user as fondator
-			if( $this->sqlExec( "UPDATE `". $this->dbprefix ."users` SET group_id = '". $groupId ."', user_password='". phpbb_hash( $password ) ."' WHERE user_id = '". $forumUserId ."'") )
+			if( $this->sqlExec( "UPDATE `". $this->dbprefix ."users` SET group_id = '". $groupId ."' ". $newUserType .", user_password='". phpbb_hash( $password ) ."' WHERE user_id = '". $forumUserId ."'") )
 			{
+				// is the user is the new foundator, be sure that nobody else is the foundator (phpBB doesn't like to have multiple foundator)
+				if( $isFoundator )
+				{
+					$this->sqlExec( "UPDATE `". $this->dbprefix ."users` SET user_type=0 WHERE user_type = 3 AND user_id != '". $forumUserId ."'" );
+				}
 				$result = $this->sqlExec( "SELECT * FROM `". $this->dbprefix ."user_group` WHERE group_id = '". $groupId ."' AND user_id = '". $forumUserId ."'" );
 				$ar 	= $this->db->sql_fetchrow($result);
 				if( !empty( $ar ) )

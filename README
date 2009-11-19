@@ -100,8 +100,7 @@ Extending the plugin in order to create a connector to an other user management 
   
   * Commit your project again, in order to have the freshly installed version of you're forum code.
   
-  * Delete the phpBB3's "install" directory and commit again you're project.
-  
+  * Delete the phpBB3's "install" directory and commit again you're project.  
   
 #### Usage
 
@@ -112,7 +111,7 @@ In order to promote a user as a super admin, launch the following task once ever
 	[plain]
 	./symfony prestaForumConnector:promoteUser frontend %userIdToPromote% --env=dev
 
-
+This taks will ask for user's password, and ask if the user should be considered as the forum's foundator
 
   
 ## User Connectors
