@@ -156,7 +156,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	public function getForumUserIdFromProjectUserId($projectUserId)
 	{
 		$sql	= "SELECT user_id FROM `". $this->dbprefix ."profile_fields_data` "
-				. " WHERE pf_".$this->params['forumFieldProjectUserId']." = ".$projectUserId;
+				. " WHERE pf_".$this->params['forumFieldProjectUserId']." = '".$projectUserId ."'";
 		$result = $this->sqlExec($sql);
 		$ar 	= $this->db->sql_fetchrow($result);
 		if(is_array($ar) && array_key_exists('user_id',$ar))
@@ -198,7 +198,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	protected function projectUserExist($projectUserId)
 	{
 		$sql	= "SELECT user_id FROM `". $this->dbprefix ."profile_fields_data`"
-				. " WHERE pf_".$this->params['forumFieldProjectUserId']." = ".$projectUserId;
+				. " WHERE pf_".$this->params['forumFieldProjectUserId']." = '".$projectUserId ."'";
 		$result = $this->sqlExec($sql);
 		$exist 	= mysql_num_rows($result);
 		if($exist)
@@ -639,7 +639,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	public function forumUserIsEnabled($forumUserId)
 	{
-		$sql 	= 'SELECT user_id FROM '.$this->dbprefix.'users WHERE user_type = 0 AND user_inactive_reason = 0 AND user_id = '.$forumUserId;
+		$sql 	= "SELECT user_id FROM ".$this->dbprefix."users WHERE user_type = 0 AND user_inactive_reason = 0 AND user_id = '".$forumUserId ."'";
 		$result	= $this->sqlExec($sql);
 		$exist 	= mysql_num_rows($result);
 		if($exist)
@@ -656,11 +656,11 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	public function isSignedIn($forumUserId)
 	{
-		$sql 	= 'SELECT user_id FROM '.$this->dbprefix.'sessions_keys WHERE user_id = '.$forumUserId;
+		$sql 	= "SELECT user_id FROM ".$this->dbprefix."sessions_keys WHERE user_id = '".$forumUserId ."'";
 		$result	= $this->sqlExec($sql);
 		$existSessionsKeys 	= mysql_num_rows($result);
 		
-		$sql 	= 'SELECT session_user_id FROM '.$this->dbprefix.'sessions WHERE session_user_id = '.$forumUserId;
+		$sql 	= "SELECT session_user_id FROM ".$this->dbprefix."sessions WHERE session_user_id = '".$forumUserId ."'";
 		$result	= $this->sqlExec($sql);
 		$existSessions 	= mysql_num_rows($result);
 		

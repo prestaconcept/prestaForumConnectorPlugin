@@ -56,7 +56,7 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 		$sfTask->logSection( 'Database', 'Add custom field - part 1', null, $exist || $succeed ? 'INFO' : 'ERROR' );
 		
 		// Check if the field already create in the profile_fields_data table
-		$sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '". $this->dbprefix ."profile_fields_data' AND column_name = 'pf_". $field ."'";
+		$sql = "SHOW COLUMNS FROM `". $this->dbprefix ."profile_fields_data` LIKE 'pf_". $field ."'";
 		$result = $this->sqlExec($sql);
 		$exist	= mysql_num_rows($result);
 		if(!$exist)
