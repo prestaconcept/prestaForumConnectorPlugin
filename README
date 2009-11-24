@@ -226,3 +226,12 @@ This taks will ask for user's password, and ask if the user should be considered
 			prestaForumFactory::getForumConnectorInstance()->deleteForumUser( $userId );
 		}
 
+## Changelog
+
+### 2009-11-24 | 1.0.0
+  * First public version
+  * Tested successfully on production for one project
+  * Tested in symfony 1.2 and 1.4 
+  
+### 2009-11-09 | 0.0.1
+  * First internal beta version
