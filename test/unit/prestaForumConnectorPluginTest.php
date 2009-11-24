@@ -6,8 +6,8 @@ $t = new lime_test(26, new lime_output_color());
 $configuration = ProjectConfiguration::getApplicationConfiguration( 'frontend', 'test', true);
 sfContext::createInstance($configuration);
 
-$mockUserObject	= prestaForumFactory::getMockUserConnectorInstance();
-$mockForumObject= prestaForumFactory::getMockForumConnectorInstance();
+$mockUserObject	= prestaForumFactoryMock::getUserConnectorInstance();
+$mockForumObject= prestaForumFactoryMock::getForumConnectorInstance();
 
 $t->comment('1 - Test convertMailAddressToNickName function');
 $t->is($mockForumObject->convertMailAddressToNickName('yly@prestaconcept.net'),'yly','::convertMailAddressToNickName() - yly@prestaconcept.net becomes yly');
