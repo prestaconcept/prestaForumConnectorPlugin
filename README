@@ -94,7 +94,7 @@ Extending the plugin in order to create a connector to an other user management 
   
   * Commit your project, in order to have an original version of you're forum code.
   
-  * Add svn:ignore * (or similar command for your versionning tool) to "/cache/", "/files/", "/store/" and "/images/avatars/upload/" forum's sub-directories
+  * Add svn:ignore * (or similar command for your versionning tool) to "/cache/", "/files/", "/store/" and "/images/avatars/upload/" forum's sub-directories (and other cache directories of the eventualy installed mod)
   
   * Access to the forum in you're navigator and follow the installation instruction of phpBB3.
   
