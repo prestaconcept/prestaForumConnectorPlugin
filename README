@@ -188,8 +188,10 @@ This taks will ask for user's password, and ask if the user should be considered
 		      class:  prestaSfGuardDoctrineConnector
 		      param: 
 		        getUsernameMethod:  getUsername	# define here the name of the sfGuardUser's method to use for retrieving the username
-		        getEmailMethod:     getEmail	# define here the name of the sfGuardUser's method to use for retrieving the email. Can be getUsername if the username is the email. If needed create yourself this method if the email is stored in another table like the profile table.
+		        getEmailMethod:     getEmail	# define here the name of the sfGuardUser's method to use for retrieving the email (should be getEmailAddress for latest sfDoctrineGuardPlugin). Can be getUsername if the username is the email. If needed create yourself this method if the email is stored in another table like the profile table.
 		        getCultureMethod:   getCulture	# define here the name of the sfGuardUser's method to use for retrieving the user's preferred culture. If needed create yourself this method if the culture is stored in another table like the profile table or if it is a constant.
+	
+	**Warning:** If you use latest sfDoctrineGuardPlugin version with email field included, be sure to redefine the 'getEmailMethod' to 'getEmailAddress'.
 	        
   * Change the parent class in `myUser.class.php`
 
@@ -228,6 +230,9 @@ This taks will ask for user's password, and ask if the user should be considered
 
 ## Changelog
 
+### 2009-12-29 | 1.0.1
+  * Tested with latest sfDoctrineGuardPlugin version that include email field in sf_guard_user  
+  
 ### 2009-11-24 | 1.0.0
   * First public version
   * Tested successfully on production for one project

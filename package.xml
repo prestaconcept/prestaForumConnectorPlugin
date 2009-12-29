@@ -27,9 +27,9 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 		<email>mrandy@prestaconcept.net</email>
 		<active>yes</active>
 	</lead>
-	<date>2009-11-24</date>
+	<date>2009-12-29</date>
 	<version>
-		<release>1.0.0</release>
+		<release>1.0.1</release>
 		<api>1.0.0</api>
 	</version>
 	<stability>
@@ -89,6 +89,21 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 	<phprelease />
 	<changelog>
 		<release>
+	      <version>
+	        <release>1.0.1</release>
+	        <api>1.0.0</api>
+	      </version>
+	      <stability>
+	       <release>stable</release>
+	       <api>stable</api>
+	      </stability>
+	      <license uri="http://www.symfony-project.com/license">MIT license</license>
+	      <date>2009-12-29</date>
+	      <notes>
+	        * Tested with latest sfDoctrineGuardPlugin version that include email field in sf_guard_user
+	      </notes>
+	    </release>
+	    <release>
 	      <version>
 	        <release>1.0.0</release>
 	        <api>1.0.0</api>
