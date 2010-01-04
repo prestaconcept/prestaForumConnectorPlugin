@@ -50,7 +50,8 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 		$exist	= mysql_num_rows($result);
 		if(!$exist)
 		{
-			$sql = "INSERT INTO `".$this->dbprefix."profile_fields` VALUES( NULL, '". $field ."', 1, '". $field ."', '10', '0', '0', '0', '0', '', 0, 0, 0, 1, 1, 1, 1)";
+			$sql = "INSERT INTO `".$this->dbprefix."profile_fields` (field_id, field_name, field_type, field_ident, field_length, field_minlen, field_maxlen, field_novalue, field_default_value, field_validation, field_required, field_show_on_reg, field_show_profile, field_hide, field_no_view, field_active, field_order )
+			 VALUES ( NULL, '". $field ."', 1, '". $field ."', '10', '0', '0', '0', '0', '', 0, 0, 0, 1, 1, 1, 1)";
 			$succeed	= $this->sqlExec($sql);
 		}
 		$sfTask->logSection( 'Database', 'Add custom field - part 1', null, $exist || $succeed ? 'INFO' : 'ERROR' );
@@ -107,10 +108,18 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 		// *** Disable logout link
 		// *************
 		
-		$this->searchAndReplace(
-			'<li class="icon-logout"><a href="{U_LOGIN_LOGOUT}" title="{L_LOGIN_LOGOUT}" accesskey="l">{L_LOGIN_LOGOUT}</a></li>',
-			'<!-- IF S_USER_LOGGED_IN  --><li class="icon-logout">{L_LOGIN_LOGOUT}</li><!-- ENDIF -->',
-			$this->phpbb_root_path.'styles/prosilver/template/overall_header.html', $sfTask );
+		$replace	= '<!-- IF S_USER_LOGGED_IN  --><li class="icon-logout">{L_LOGIN_LOGOUT}</li><!-- ENDIF -->';
+		// >= 3.0.6
+		if( version_compare($this->getConfigVal('version'), '3.0.6', '>=' ) )
+		{
+			$search	= '<li class="icon-logout"><a href="{U_LOGIN_LOGOUT}" title="{L_LOGIN_LOGOUT}" accesskey="x">{L_LOGIN_LOGOUT}</a></li>';
+		}
+		// < 3.0.6
+		else
+		{
+			$search	= '<li class="icon-logout"><a href="{U_LOGIN_LOGOUT}" title="{L_LOGIN_LOGOUT}" accesskey="l">{L_LOGIN_LOGOUT}</a></li>';
+		}
+		$this->searchAndReplace( $search, $replace, $this->phpbb_root_path.'styles/prosilver/template/overall_header.html', $sfTask );
 		
 		// *************
 		
@@ -164,7 +173,29 @@ EOF;
 		// *** disable login form
 		// *************
 		
-		$search	= <<<EOF
+		// >= 3.0.6
+		if( version_compare($this->getConfigVal('version'), '3.0.6', '>=' ) )
+		{
+			$search	= <<<EOF
+<!-- IF not S_USER_LOGGED_IN and not S_IS_BOT -->
+	<form method="post" action="{S_LOGIN_ACTION}" class="headerspace">
+	<h3><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a><!-- IF S_REGISTER_ENABLED -->&nbsp; &bull; &nbsp;<a href="{U_REGISTER}">{L_REGISTER}</a><!-- ENDIF --></h3>
+		<fieldset class="quick-login">
+			<label for="username">{L_USERNAME}:</label>&nbsp;<input type="text" name="username" id="username" size="10" class="inputbox" title="{L_USERNAME}" />
+			<label for="password">{L_PASSWORD}:</label>&nbsp;<input type="password" name="password" id="password" size="10" class="inputbox" title="{L_PASSWORD}" />
+			<!-- IF S_AUTOLOGIN_ENABLED -->
+				| <label for="autologin">{L_LOG_ME_IN} <input type="checkbox" name="autologin" id="autologin" /></label>
+			<!-- ENDIF -->
+			<input type="submit" name="login" value="{L_LOGIN}" class="button2" />
+		</fieldset>
+	</form>
+<!-- ENDIF -->
+EOF;
+		}
+		// <= 3.0.5
+		else
+		{
+			$search	= <<<EOF
 <!-- IF not S_USER_LOGGED_IN and not S_IS_BOT -->
 	<form method="post" action="{S_LOGIN_ACTION}" class="headerspace">
 	<h3><a href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a><!-- IF S_REGISTER_ENABLED -->&nbsp; &bull; &nbsp;<a href="{U_REGISTER}">{L_REGISTER}</a><!-- ENDIF --></h3>
@@ -179,6 +210,7 @@ EOF;
 	</form>
 <!-- ENDIF -->
 EOF;
+		}
 		$this->searchAndReplace( $search, '<!-- /* form removed */ -->', $this->phpbb_root_path.'styles/prosilver/template/index_body.html', $sfTask );
 		
 		// *************
@@ -188,11 +220,24 @@ EOF;
 		// *** disable login body page
 		// *************
 	
-$search	= <<<EOF
+		// >= 3.0.6
+		if( version_compare($this->getConfigVal('version'), '3.0.6', '>=' ) )
+		{
+			$search	= <<<EOF
+		<h2><!-- IF LOGIN_EXPLAIN -->{LOGIN_EXPLAIN}<!-- ELSE -->{L_LOGIN}<!-- ENDIF --></h2>
+
+		<fieldset <!-- IF not S_CONFIRM_CODE -->class="fields1"<!-- ELSE -->class="fields2"<!-- ENDIF -->>
+EOF;
+		}
+		// <= 3.0.5
+		else
+		{
+			$search	= <<<EOF
 		<h2><!-- IF LOGIN_EXPLAIN -->{LOGIN_EXPLAIN}<!-- ELSE -->{L_LOGIN}<!-- ENDIF --></h2>
 		
 		<fieldset <!-- IF not S_CONFIRM_CODE -->class="fields1"<!-- ELSE -->class="fields2"<!-- ENDIF -->>
 EOF;
+		}
 $replace	= <<<EOF
 		<h2><!-- IF LOGIN_EXPLAIN -->{LOGIN_EXPLAIN}<!-- ELSE -->{L_LOGIN}<!-- ENDIF --></h2>	
 	<!-- IF S_ADMIN_AUTH  -->
@@ -382,17 +427,43 @@ EOF;
 		// *** acm_file.php
 		// *************
 		
-		$search	= <<<EOF
+		// >= 3.0.6
+		if( version_compare($this->getConfigVal('version'), '3.0.6', '>=' ) )
+		{
+			$this->searchAndReplace(
+				'fwrite($handle, "\n" . $this->var_expires[$var] . "\n");',
+				'fwrite($handle, "\n" . ( array_key_exists( $var, $this->var_expires ) ? $this->var_expires[$var] : time() + 31536000 ) . "\n");',
+				$this->phpbb_root_path.'includes/acm/acm_file.php',
+				$sfTask
+			);
+			
+			$search	= <<<EOF
+			if (\$filename == 'data_global')
+			{
+				// Global data is a different format
+EOF;
+			$replace	= <<<EOF
+			if (\$filename == 'data_global')
+			{
+				\$this->vars = array_merge(\$this->vars,getConfigEnvironment());
+				// Global data is a different format
+EOF;
+		}
+		// <= 3.0.5
+		else
+		{
+			$search	= <<<EOF
 		if (\$fp = @fopen(\$this->cache_dir . 'data_global.' . \$phpEx, 'wb'))
 		{
 			@flock(\$fp, LOCK_EX);
 EOF;
-		$replace	= <<<EOF
+			$replace	= <<<EOF
 		if (\$fp = @fopen(\$this->cache_dir . 'data_global.' . \$phpEx, 'wb'))
 		{
 			\$this->vars = array_merge(\$this->vars,getConfigEnvironment());
 			@flock(\$fp, LOCK_EX);
 EOF;
+		}
 		$this->searchAndReplace( $search, $replace, $this->phpbb_root_path.'includes/acm/acm_file.php', $sfTask );
 		
 		// *************
