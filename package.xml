@@ -27,9 +27,9 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 		<email>mrandy@prestaconcept.net</email>
 		<active>yes</active>
 	</lead>
-	<date>2010-01-04</date>
+	<date>2010-01-05</date>
 	<version>
-		<release>1.0.2</release>
+		<release>1.0.3</release>
 		<api>1.0.0</api>
 	</version>
 	<stability>
@@ -88,6 +88,22 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 	</dependencies>
 	<phprelease />
 	<changelog>
+		<release>
+	      <version>
+	        <release>1.0.3</release>
+	        <api>1.0.0</api>
+	      </version>
+	      <stability>
+	       <release>stable</release>
+	       <api>stable</api>
+	      </stability>
+	      <license uri="http://www.symfony-project.com/license">MIT license</license>
+	      <date>2010-01-05</date>
+	      <notes>
+	        * Fix code of the phpBB3 connector that was using mysql specific function instead of abstraction ones
+	        * Remove propel in a var name as it's not propel related
+	      </notes>
+	    </release>
 		<release>
 	      <version>
 	        <release>1.0.2</release>

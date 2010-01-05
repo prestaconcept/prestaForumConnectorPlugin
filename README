@@ -235,6 +235,10 @@ If you want to do a forum upgrade (eg from v3.0.5 to v3.0.6), it is recommanded 
 
 ## Changelog
 
+### 2010-01-05 | 1.0.3
+  * Fix code of the phpBB3 connector that was using mysql specific function instead of abstraction ones
+  * Remove propel in a var name as it's not propel related
+	        
 ### 2010-01-04 | 1.0.2
   * Ensure compatibility with phpBB v3.0.6
 
