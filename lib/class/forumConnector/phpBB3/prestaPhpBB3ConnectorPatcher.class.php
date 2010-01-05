@@ -398,9 +398,9 @@ if( \$instanceCreated )
 }
 
 \$databaseManager	= new sfDatabaseManager( \$configuration );
-\$sfPropelDatabase 	= \$databaseManager->getDatabase( sfConfig::get('app_prestaForumConnector_forumDatabaseId' ) );
+\$sfDatabase 		= \$databaseManager->getDatabase( sfConfig::get('app_prestaForumConnector_forumDatabaseId' ) );
 
-\$dsn = \$sfPropelDatabase->getParameter('dsn');
+\$dsn = \$sfDatabase->getParameter('dsn');
 \$dsn = explode(':',\$dsn);
 // phpBB 3.0.x auto-generated configuration file
 // Do not change anything in this file!
@@ -412,8 +412,8 @@ if( \$instanceCreated )
 \$dbhost 			= \$dsn_dbhost[1];
 \$dbport 			= '';
 \$dbname 			= \$dsn_dbname[1];
-\$dbuser 			= \$sfPropelDatabase->getParameter('username');
-\$dbpasswd 			= \$sfPropelDatabase->getParameter('password');
+\$dbuser 			= \$sfDatabase->getParameter('username');
+\$dbpasswd 			= \$sfDatabase->getParameter('password');
 \$table_prefix 		= '$this->dbprefix';
 \$acm_type 			= 'file';
 \$load_extensions	= '';
