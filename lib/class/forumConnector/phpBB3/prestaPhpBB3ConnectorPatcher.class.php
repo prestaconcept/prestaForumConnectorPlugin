@@ -45,9 +45,9 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 		$field	= $this->params['forumFieldProjectUserId'];
 		
 		// Check if this field already exist
-		$sql = "SELECT `field_id` FROM `".$this->dbprefix."profile_fields` WHERE `field_name` = '". $field ."'";
-		$result = $this->sqlExec($sql);
-		$exist	= mysql_num_rows($result);
+		$sql	= "SELECT `field_id` FROM `".$this->dbprefix."profile_fields` WHERE `field_name` = '". $field ."'";
+		$result	= $this->sqlExec($sql);
+		$exist	= is_array( $this->db->sql_fetchrow($result) );
 		if(!$exist)
 		{
 			$sql = "INSERT INTO `".$this->dbprefix."profile_fields` (field_id, field_name, field_type, field_ident, field_length, field_minlen, field_maxlen, field_novalue, field_default_value, field_validation, field_required, field_show_on_reg, field_show_profile, field_hide, field_no_view, field_active, field_order )
@@ -59,7 +59,7 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 		// Check if the field already create in the profile_fields_data table
 		$sql = "SHOW COLUMNS FROM `". $this->dbprefix ."profile_fields_data` LIKE 'pf_". $field ."'";
 		$result = $this->sqlExec($sql);
-		$exist	= mysql_num_rows($result);
+		$exist	= is_array( $this->db->sql_fetchrow($result) );
 		if(!$exist)
 		{
 			$sql = "ALTER TABLE `".$this->dbprefix."profile_fields_data` ADD `pf_". $field ."` bigint(20)";
@@ -500,7 +500,7 @@ EOF;
 		// boost admin rights
 		$sql = "SELECT * FROM `".$this->dbprefix."acl_groups` WHERE `group_id` = 5 AND `forum_id` = 0 AND `auth_option_id`=0 AND `auth_role_id`=4 AND `auth_setting`=0";
 		$result = $this->sqlExec($sql);
-		$exist	= mysql_num_rows($result);
+		$exist	= is_array( $this->db->sql_fetchrow($result) );;
 		if(!$exist)
 		{
 			$sql = "INSERT INTO  `". $this->dbprefix ."acl_groups` (`group_id`, `forum_id`, `auth_option_id`, `auth_role_id`, `auth_setting`) VALUES ('5', '0', '0', '4', '0')";

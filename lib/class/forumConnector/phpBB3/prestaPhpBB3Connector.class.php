@@ -200,12 +200,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		$sql	= "SELECT user_id FROM `". $this->dbprefix ."profile_fields_data`"
 				. " WHERE pf_".$this->params['forumFieldProjectUserId']." = '".$projectUserId ."'";
 		$result = $this->sqlExec($sql);
-		$exist 	= mysql_num_rows($result);
-		if($exist)
-		{
-			return true;
-		}
-		return false;
+		return is_array( $this->db->sql_fetchrow($result) );
 	}
 
 	/**
@@ -361,12 +356,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		$sql	= "SELECT username FROM `". $this->dbprefix ."users`"
 				. " WHERE username = '". $nickname ."' AND `user_id` != ". $forumUserId;
 		$result = $this->sqlExec($sql);
-		$exist 	= mysql_num_rows($result);
-		if($exist > 0)
-		{
-			return true;
-		}
-		return false;
+		return is_array( $this->db->sql_fetchrow($result) );
 	}
 
 	/**
@@ -641,12 +631,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	{
 		$sql 	= "SELECT user_id FROM ".$this->dbprefix."users WHERE user_type = 0 AND user_inactive_reason = 0 AND user_id = '".$forumUserId ."'";
 		$result	= $this->sqlExec($sql);
-		$exist 	= mysql_num_rows($result);
-		if($exist)
-		{
-			return true;
-		}
-		return false;
+		return is_array( $this->db->sql_fetchrow($result) );
 	}
 	
 	/**
@@ -658,16 +643,12 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	{
 		$sql 	= "SELECT user_id FROM ".$this->dbprefix."sessions_keys WHERE user_id = '".$forumUserId ."'";
 		$result	= $this->sqlExec($sql);
-		$existSessionsKeys 	= mysql_num_rows($result);
+		$existSessionsKeys 	= is_array( $this->db->sql_fetchrow($result) );
 		
 		$sql 	= "SELECT session_user_id FROM ".$this->dbprefix."sessions WHERE session_user_id = '".$forumUserId ."'";
 		$result	= $this->sqlExec($sql);
-		$existSessions 	= mysql_num_rows($result);
+		$existSessions		= is_array( $this->db->sql_fetchrow($result) );
 		
-		if($existSessionsKeys && $existSessions)
-		{
-			return true;
-		}
-		return false;
+		return ($existSessionsKeys && $existSessions);
 	}
 }
