@@ -105,6 +105,10 @@ Extending the plugin in order to create a connector to an other user management 
  
 #### Usage
 
+Notice that when some code that interact with this plugin is executed it require that an application has been instanciated. 
+This should always be the case for HTPP request, but not always the case for symfony tasks.
+So if you use tasks that have an optionnal "application" parameter (like for sfGuardPlugin), ensure to fill this parameter.
+
 ##### Promote a user as super admin
 
 In order to promote a user as a super admin, launch the following task once everything has be installed. The user id given here is the user ID of the user management tools 
