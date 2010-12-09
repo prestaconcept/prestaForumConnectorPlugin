@@ -378,16 +378,18 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		$this->sqlExec($sql);
 		
 		$browser = '';
+		// get user-agent and truncate it to max size
 		if(is_array($_SERVER) && array_key_exists('HTTP_USER_AGENT', $_SERVER))
 		{
-			$browser = $_SERVER['HTTP_USER_AGENT'];
+			$substrFct	= function_exists('mb_substr') ? 'mb_substr' : 'substr';
+			$browser 	= strval(trim(strtolower($substrFct($_SERVER['HTTP_USER_AGENT'], 0, 149))));
 		}
 			
 		$sql	= "REPLACE INTO `". $this->dbprefix ."sessions` (`session_id` ,`session_user_id` ,`session_forum_id` ,"
 				. "`session_last_visit` ,`session_start` ,`session_time` ,`session_ip` ,`session_browser` ,"
 				. "`session_forwarded_for` ,`session_page` ,`session_viewonline` ,`session_autologin` ,"
 				. "`session_admin`) VALUES ("
-				. "'$sessionId', '$user_id', '0', '$now', '$now', '$now', '$remote_ip', '$browser', '', '', '1', '1', '0');";
+				. "'". $this->db->sql_escape($sessionId) ."', '". $this->db->sql_escape($user_id) ."', '0', '$now', '$now', '$now', '". $this->db->sql_escape($remote_ip) ."', '". $this->db->sql_escape($browser) ."', '', '', '1', '1', '0');";
 		$this->sqlExec($sql);
 	}
 
