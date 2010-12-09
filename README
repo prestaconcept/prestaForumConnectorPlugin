@@ -239,6 +239,11 @@ If you want to do a forum upgrade (eg from v3.0.5 to v3.0.6), it is recommanded 
 
 ## Changelog
 
+### 2010-12-09 | 1.0.4
+
+  * [bugfix] If the user-agent of the people who is trying to login is more than 150 chars length, then it would throw an error
+
+
 ### 2010-01-05 | 1.0.3
   * Fix code of the phpBB3 connector that was using mysql specific function instead of abstraction ones
   * Remove propel in a var name as it's not propel related

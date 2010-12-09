@@ -1,1 +1,0 @@
-[bugfix] If the user-agent of the people who is trying to login is more than 150 chars length, then it would throw an error
