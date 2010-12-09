@@ -24,47 +24,21 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 		<email>mrandy@prestaconcept.net</email>
 		<active>yes</active>
 	</lead>
-	<date>2010-12-09</date>
+	<date>##CURRENT_DATE##</date>
 	<version>
-		<release>1.0.4</release>
-		<api>1.0.0</api>
+		<release>##PLUGIN_VERSION##</release>
+		<api>##API_VERSION##</api>
 	</version>
 	<stability>
-		<release>stable</release>
-		<api>stable</api>
+		<release>##STABILITY##</release>
+		<api>##STABILITY##</api>
 	</stability>
 	<license uri="http://www.symfony-project.org/license">
 		MIT license
 	</license>
 	<notes>-</notes>
 	<contents>
-		<dir name="/">
-			<file role="data" name="LICENSE" />
-			<file role="data" name="README" />
-			<file role="data" name="config/app.yml" />
-			<file role="data" name="config/config.php" />
-			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3Connector.class.php" />
-			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3ConnectorMock.class.php" />
-			<file role="data" name="lib/class/forumConnector/phpBB3/prestaPhpBB3ConnectorPatcher.class.php" />
-			<file role="data" name="lib/class/forumConnector/prestaAbstractForumConnector.class.php" />
-			<file role="data" name="lib/class/forumConnector/prestaForumConnectorMockInterface.php" />
-			<file role="data" name="lib/class/forumConnector/prestaForumConnectorPatcherInterface.php" />
-			<file role="data" name="lib/class/prestaForumFactory.class.php" />
-			<file role="data" name="lib/class/userConnector/prestaAbstractUserConnector.class.php" />
-			<file role="data" name="lib/class/userConnector/prestaUserConnectorMockInterface.php" />
-			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaForumConnectorSfGuardDoctrineSecurityUser.class.php" />
-			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaSfGuardDoctrineConnector.class.php" />
-			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaSfGuardDoctrineConnectorMock.class.php" />
-			<file role="data" name="lib/class/userConnector/sfGuardPropel/prestaForumConnectorSfGuardPropelSecurityUser.class.php" />
-			<file role="data" name="lib/class/userConnector/sfGuardPropel/prestaSfGuardPropelConnector.class.php" />
-			<file role="data" name="lib/class/userConnector/sfGuardPropel/prestaSfGuardPropelConnectorMock.class.php" />
-			<file role="data" name="lib/task/prestaForumConnectorPatchForumTask.class.php" />
-			<file role="data" name="lib/task/prestaForumConnectorPromoteUserTask.class.php" />
-			<file role="data" name="lib/task/prestaForumConnectorSynchUserTask.class.php" />
-			<file role="data" name="test/bootstrap/class/prestaForumFactoryMock.class.php" />
-			<file role="data" name="test/bootstrap/unit.php" />
-			<file role="data" name="test/unit/prestaForumConnectorPluginTest.php" />
-		</dir>
+##CONTENTS##
 	</contents>
 	<dependencies>
 		<required>
@@ -85,20 +59,7 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 	</dependencies>
 	<phprelease />
 	<changelog>
-		<release>
-			<version>
-				<release>1.0.4</release>
-				<api>1.0.0</api>
-			</version>
-			<stability>
-				<release>stable</release>
-				<api>stable</api>
-			</stability>
-			<date>2010-12-09</date>
-			<notes>
-* [bugfix] If the user-agent of the people who is trying to login is more than 150 chars length, then it would throw an error
-	        </notes>
-		</release> 
+##NEW_RELEASE##
 	    <release>
 	      <version>
 	        <release>1.0.3</release>
