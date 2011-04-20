@@ -62,6 +62,13 @@ Extending the plugin in order to create a connector to an other user management 
 	
 	    [plain]
 	    ./symfony prestaForumConnector:synchUser frontend all --env=dev
+	    
+  * In apps/%APP_NAME%/config/settings.yml, you should desactivate E_STRICT error_reporting to prevent the display of warning in the forum phpBB3 and also be able to connect to the board administration.
+
+		[yaml]
+		dev:
+	      .settings:
+	        error_reporting:        <?php echo (E_ALL)."\n" ?> # ATTENTION: E_STRICT has been desactivated only for phpBB3 forum
 
 ## Forum Connectors
 
@@ -116,7 +123,14 @@ In order to promote a user as a super admin, launch the following task once ever
 	[plain]
 	./symfony prestaForumConnector:promoteUser frontend %userIdToPromote% --env=dev
 
-This taks will ask for user's password, and ask if the user should be considered as the forum's founder
+This taks will ask for user's password, and ask if the user should be considered as the forum's founder.
+
+A notice appears when you execute the task but the user has been properly promoted. It's a phpBB3 error.
+
+	[plain]
+	<b>[phpBB Debug] PHP Notice</b>: in file <b>/includes/functions.php</b> on line <b>223</b>: <b>Undefined index: rand_seed_last_update</b><br />
+	
+* A link to the administration interface will appear in the footer on the index page and a new authentication will be requested to access it.
 
 #### Forum upgrade
 

@@ -103,9 +103,9 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	public function enableForumUser($projectUserId)
 	{
 		$forum_user_id = $this->getForumUserIdFromProjectUserId($projectUserId);
-		$sql	= "UPDATE `". $this->dbprefix ."users`"
-				. " SET `user_type` = 0, `user_inactive_reason` = 0 "
-				. " WHERE `user_id` = ".$forum_user_id;
+		$sql	= "UPDATE ". $this->dbprefix ."users"
+				. " SET user_type = 0, user_inactive_reason = 0 "
+				. " WHERE user_id = ".$forum_user_id;
 		$this->sqlExec($sql);
 	}
 
@@ -117,9 +117,9 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	public function disableForumUser($projectUserId)
 	{
 		$forum_user_id = $this->getForumUserIdFromProjectUserId($projectUserId);
-		$sql	= "UPDATE `". $this->dbprefix ."users`"
-				. " SET `user_type` = 1, `user_inactive_reason` = 3 "
-				. " WHERE `user_id` = ".$forum_user_id;
+		$sql	= "UPDATE ". $this->dbprefix ."users"
+				. " SET user_type = 1, user_inactive_reason = 3 "
+				. " WHERE user_id = ".$forum_user_id;
 		$this->sqlExec($sql);
 	}
 	
@@ -145,7 +145,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	public function getProjectUserIdFromForumUserId($forumUserId)
 	{
-		$sql	= "SELECT pf_".$this->params['forumFieldProjectUserId']." FROM `". $this->dbprefix ."profile_fields_data` "
+		$sql	= "SELECT pf_".$this->params['forumFieldProjectUserId']." FROM ". $this->dbprefix ."profile_fields_data "
 				. " WHERE user_id = ".$forumUserId;
 		$result = $this->sqlExec($sql);
 		$ar 	= $this->db->sql_fetchrow($result);
@@ -164,7 +164,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	public function getForumUserIdFromProjectUserId($projectUserId)
 	{
-		$sql	= "SELECT user_id FROM `". $this->dbprefix ."profile_fields_data` "
+		$sql	= "SELECT user_id FROM ". $this->dbprefix ."profile_fields_data "
 				. " WHERE pf_".$this->params['forumFieldProjectUserId']." = '".$projectUserId ."'";
 		$result = $this->sqlExec($sql);
 		$ar 	= $this->db->sql_fetchrow($result);
@@ -183,8 +183,8 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	public function getUserNickName($projectUserId)
 	{
-		$sql	= "SELECT username FROM `". $this->dbprefix ."users` u,"
-				. "`". $this->dbprefix ."profile_fields_data` d"
+		$sql	= "SELECT username FROM ". $this->dbprefix ."users u,"
+				. "". $this->dbprefix ."profile_fields_data d"
 				. " WHERE d.pf_".$this->params['forumFieldProjectUserId']." = ".$projectUserId
 				. " AND u.user_id = d.user_id";
 		$result = $this->sqlExec($sql);
@@ -206,7 +206,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	protected function projectUserExist($projectUserId)
 	{
-		$sql	= "SELECT user_id FROM `". $this->dbprefix ."profile_fields_data`"
+		$sql	= "SELECT user_id FROM ". $this->dbprefix ."profile_fields_data"
 				. " WHERE pf_".$this->params['forumFieldProjectUserId']." = '".$projectUserId ."'";
 		$result = $this->sqlExec($sql);
 		return is_array( $this->db->sql_fetchrow($result) );
@@ -245,19 +245,19 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		$userCulture	= prestaForumFactory::getUserConnectorInstance()->getUserCulture($projectUserId);
 		$userCulture	= empty( $userCulture ) ? sfConfig::get('sf_default_culture') : substr( $userCulture, 0, 2 );
 
-		$sql	= "INSERT INTO `". $this->dbprefix ."users` "
+		$sql	= "INSERT INTO ". $this->dbprefix ."users "
 				. " (group_id,user_permissions,user_sig,user_occ,user_interests,user_ip,user_regdate,username,username_clean,user_email,user_lang)"
 				. " VALUES (".$group_id.",'','','','','".$remote_ip."',".time().",'".$nickname."','".$nickname."','".prestaForumFactory::getUserConnectorInstance()->getUserEmail($projectUserId)."','". $userCulture ."')";
 		$this->sqlExec($sql);
 
 		$user_id = $this->db->sql_nextid();
 
-		$sql	= "INSERT INTO `". $this->dbprefix ."user_group` "
+		$sql	= "INSERT INTO ". $this->dbprefix ."user_group "
 				. " (group_id,user_id,user_pending)"
 				. " VALUES (".$group_id.",".$user_id.",0)";
 		$this->sqlExec($sql);
 
-		$sql	= "INSERT INTO `". $this->dbprefix ."profile_fields_data` "
+		$sql	= "INSERT INTO ". $this->dbprefix ."profile_fields_data "
 				. " (user_id,pf_".$this->params['forumFieldProjectUserId'].")"
 				. " VALUES (".$user_id.",".$projectUserId.")";
 		$this->sqlExec($sql);
@@ -297,15 +297,15 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		$userCulture	= prestaForumFactory::getUserConnectorInstance()->getUserCulture($projectUserId);
 		$userCulture	= empty( $userCulture ) ? sfConfig::get('sf_default_culture') : substr( $userCulture, 0, 2 );
 
-		$sql	= "UPDATE `". $this->dbprefix ."users` "
+		$sql	= "UPDATE ". $this->dbprefix ."users "
 				. "SET ";
 
 		if(prestaForumFactory::getUserConnectorInstance()->getUserNickName($projectUserId) != $nickname || $nickname != $this->getUserNickName($projectUserId))
 		{
-			$sql .= "`username` = '". $nickname ."', `username_clean` = '".$nickname."', ";
+			$sql .= "username = '". $nickname ."', username_clean = '".$nickname."', ";
 		}
-		$sql	.= "`user_email` = '". $email ."', `user_lang`='". $userCulture ."'"
-				. "WHERE `user_id` = ". $forum_user_id;
+		$sql	.= "user_email = '". $email ."', user_lang='". $userCulture ."'"
+				. "WHERE user_id = ". $forum_user_id;
 		$this->sqlExec($sql);
 
 		$enabled = prestaForumFactory::getUserConnectorInstance()->isUserEnabled($projectUserId);
@@ -362,29 +362,52 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 */
 	protected function nickNameAlreadyUse($nickname, $forumUserId = 0)
 	{
-		$sql	= "SELECT username FROM `". $this->dbprefix ."users`"
-				. " WHERE username = '". $nickname ."' AND `user_id` != ". $forumUserId;
+		$sql	= "SELECT username FROM ". $this->dbprefix ."users"
+				. " WHERE username = '". $nickname ."' AND user_id != ". $forumUserId;
 		$result = $this->sqlExec($sql);
 		return is_array( $this->db->sql_fetchrow($result) );
 	}
-
+	
 	/**
 	 * Insert a user session
-	 * @param 	$sessionId
-	 * @param 	$sessionKey
-	 * @param 	$user_id
+	 * 
 	 * @author	ylybliamay
-	 * @version	1.0 - 2009-10-26 - ylybliamay
+	 * @version	1.1 - 13 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
 	 * @since	1.0 - 2009-10-26 - ylybliamay
+	 * @param 	string $sessionId
+	 * @param 	string $sessionKey
+	 * @param 	integer $user_id
 	 */
 	protected function insertDbSession($sessionId, $sessionKey, $user_id)
 	{
-		$remote_ip = sfContext::getInstance()->getRequest()->getHttpHeader('addr', 'remote');
-		$now = time();
+		//------------SESSIONS KEYS
+		
+		$result		= null;
+		$a_result	= array();
+		$remote_ip 	= sfContext::getInstance()->getRequest()->getHttpHeader('addr', 'remote');
+		$now 		= time();
 
-		$sql	= "REPLACE INTO `". $this->dbprefix ."sessions_keys` (`key_id` ,`user_id` ,`last_ip` ,`last_login`)"
-				. "VALUES ('$sessionKey', '$user_id', '$remote_ip', '$now');";
-		$this->sqlExec($sql);
+		// Search if a record exists
+		$sql 	= "SELECT * FROM ". $this->dbprefix ."sessions_keys"
+				. " WHERE key_id='$sessionKey' AND user_id='$user_id'";
+		$result 	= $this->sqlExec($sql);
+		$a_result 	= $this->db->sql_fetchrow($result);
+		
+		// If not exists
+		if( !is_array($a_result) )
+		{
+			$sql	= "INSERT INTO ". $this->dbprefix ."sessions_keys (key_id ,user_id ,last_ip ,last_login)"
+					. " VALUES ('$sessionKey', '$user_id', '$remote_ip', '$now');";
+			$this->sqlExec($sql);
+		}
+		else
+		{
+			$sql	= "UPDATE ". $this->dbprefix ."sessions_keys SET last_ip='$remote_ip', last_login='$now'"
+					. " WHERE key_id='$sessionKey' AND user_id='$user_id'";
+			$this->sqlExec($sql);
+		}
+		
+		//------------SESSIONS
 		
 		$browser = '';
 		// get user-agent and truncate it to max size
@@ -393,15 +416,40 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 			$substrFct	= function_exists('mb_substr') ? 'mb_substr' : 'substr';
 			$browser 	= strval(trim(strtolower($substrFct($_SERVER['HTTP_USER_AGENT'], 0, 149))));
 		}
-			
-		$sql	= "REPLACE INTO `". $this->dbprefix ."sessions` (`session_id` ,`session_user_id` ,`session_forum_id` ,"
-				. "`session_last_visit` ,`session_start` ,`session_time` ,`session_ip` ,`session_browser` ,"
-				. "`session_forwarded_for` ,`session_page` ,`session_viewonline` ,`session_autologin` ,"
-				. "`session_admin`) VALUES ("
-				. "'". $this->db->sql_escape($sessionId) ."', '". $this->db->sql_escape($user_id) ."', '0', '$now', '$now', '$now', '". $this->db->sql_escape($remote_ip) ."', '". $this->db->sql_escape($browser) ."', '', '', '1', '1', '0');";
-		$this->sqlExec($sql);
+		
+		// Variables échapées
+		$sessionId 	= $this->db->sql_escape($sessionId);
+		$user_id	= $this->db->sql_escape($user_id);
+		$remote_ip 	= $this->db->sql_escape($remote_ip);
+		$browser 	= $this->db->sql_escape($browser);
+		
+		// Search if a record exists
+		$sql 	= "SELECT * FROM ". $this->dbprefix ."sessions"
+				. " WHERE session_id='$sessionId'";
+		$result 	= $this->sqlExec($sql);
+		$a_result 	= $this->db->sql_fetchrow($result);
+		
+		// If not exists
+		if( !is_array($a_result) )
+		{
+			$sql	= "INSERT INTO ". $this->dbprefix ."sessions (session_id, session_user_id, session_forum_id, "
+					. "session_last_visit, session_start, session_time, session_ip, session_browser, "
+					. "session_forwarded_for, session_page, session_viewonline, session_autologin, "
+					. "session_admin) VALUES ("
+					. "'$sessionId', '$user_id', '0', '$now', '$now', '$now', '$remote_ip', '$browser', '', '', '1', '1', '0');";
+			$this->sqlExec($sql);
+		}
+		else
+		{
+			$sql	= "UPDATE ". $this->dbprefix ."sessions SET session_user_id='$user_id', session_forum_id='0', "
+					. "session_last_visit='$now', session_start='$now', session_time='$now', session_ip='$remote_ip', session_browser='$browser' "
+					. "session_forwarded_for='', session_page='', session_viewonline='1', session_autologin='1'"
+					. "session_admin='0'"
+					. " WHERE session_id='$sessionId'";
+			$this->sqlExec($sql);
+		}
 	}
-
+	
 	/**
 	 * Delete user's session(s) from phpBB's database
 	 * @param integer $user_id
@@ -418,21 +466,21 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 			#throw new Exception('PhpbbIntegration::deleteDbSession() got invalid user');
 		}
 
-		$sql = "DELETE FROM `". $this->dbprefix ."sessions_keys` WHERE `user_id`='$user_id'";
+		$sql = "DELETE FROM ". $this->dbprefix ."sessions_keys WHERE user_id='$user_id'";
 		$this->sqlExec($sql);
 
-		$sql = "DELETE FROM `". $this->dbprefix ."sessions` WHERE `session_user_id`='$user_id'";
+		$sql = "DELETE FROM ". $this->dbprefix ."sessions WHERE session_user_id='$user_id'";
 		$this->sqlExec($sql);
 	}
 
 	/**
 	 * Set a field in the users table
-	 * @param integer $user_id
-	 * @param array of string $field_name => $field_value - without the user_ prefix, for example: email
-	 * @param string $field_value- new field value
+	 * 
 	 * @author	ylybliamay
-	 * @version	1.0 - 2009-10-26 - ylybliamay
+	 * @version	1.0 - 14 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
 	 * @since	1.0 - 2009-10-26 - ylybliamay
+	 * @param 	integer $user_id
+	 * @param 	array $new_values
 	 */
 	public function updateUserFields($user_id, $new_values)
 	{
@@ -445,11 +493,11 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 
 		foreach($new_values as $field_name => $field_value)
 		{
-			$sSqlExtra .= ",`user_$field_name`='$field_value'";
+			$sSqlExtra .= ",user_$field_name='$field_value'";
 		}
 
 		$sSqlExtra = substr($sSqlExtra, 1);
-		$sql = "UPDATE ". $this->dbprefix ."users SET $sSqlExtra WHERE `user_id`='$user_id' LIMIT 1";
+		$sql = "UPDATE ". $this->dbprefix ."users SET $sSqlExtra WHERE user_id='$user_id'";
 		$this->sqlExec($sql);
 	}
 
@@ -506,7 +554,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		}
 		else
 		{
-			$sql 		= "SELECT `config_value` FROM `". $this->dbprefix ."config` WHERE `config_name` LIKE '$name'";
+			$sql 		= "SELECT config_value FROM ". $this->dbprefix ."config WHERE config_name LIKE '$name'";
 			$result 	= $this->sqlExec($sql);
 			$ar 		= $this->db->sql_fetchrow($result);
 			$result		= $ar['config_value'];
@@ -514,35 +562,50 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		
 		return $result;
 	}
-
+	
 	/**
 	 * Set a configuration value from phpBB's database
-	 * @param 	$name
-	 * @param 	$value
+	 * 
 	 * @author	ylybliamay
-	 * @version	1.0 - 2009-10-27 - ylybliamay
+	 * @version	1.1 - 13 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
 	 * @since	1.0 - 2009-10-27 - ylybliamay
-	 * @return 	boolean
+	 * @param 	string $name
+	 * @param 	integer $value
 	 */
 	protected function setConfigVal($name, $value)
 	{
-		$sql	= "UPDATE `".$this->dbprefix."config` "
-				. "SET`config_value` = '". $value ."' "
-				. "WHERE `config_name` = '". $name ."'";
+		$sql	= "UPDATE ".$this->dbprefix."config "
+				. "SET config_value = '". $value ."' "
+				. "WHERE config_name = '". $name ."'";
 		$this->sqlExec($sql);
 	}
-	
+		
 	/**
-	 * Increment a counter for config value
-	 * @param $config_name
-	 * @param $increment
-	 * @param $is_dynamic
-	 * @return unknown_type
+	 * Increment number of user in config value
+	 * 
+	 * @author	ylybliamay
+	 * @version	1.1 - 13 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
+	 * @since	1.0 - 2009-10-26 - ylybliamay
+	 * @param 	string $config_name
+	 * @param 	integer $increment
+	 * @param 	boolean $is_dynamic
 	 */
 	protected function setConfigCount($config_name, $increment, $is_dynamic = false)
 	{
-		$sql = 'config_value + ' . (int) $increment;
-		$this->sqlExec('UPDATE `' . $this->dbprefix . 'config` SET `config_value` = ' . $sql . " WHERE `config_name` = '" . $config_name . "'");
+		$num_users 	= 0;
+		$result		= null;
+		$a_result	= array();
+		
+		// Retrieve number of users
+		$result 	= $this->sqlExec("SELECT config_value FROM ". $this->dbprefix . "config" . " WHERE config_name = '" . $config_name . "'");
+		$a_result	= $this->db->sql_fetchrow($result);
+		$num_users 	= $a_result['config_value'];
+
+		// Increment
+		$num_users = intval($num_users) + intval($increment);
+		
+		// Update new value
+		$this->sqlExec('UPDATE ' . $this->dbprefix . 'config SET config_value = ' . $num_users . " WHERE config_name = '" . $config_name . "'");
 	}
 
 	/**
@@ -582,7 +645,7 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 	 * Promote a user as a forum admin
 	 * 
 	 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
-	 * @version	1.0 - 6 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
+	 * @version	1.1 - 14 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
 	 * @since	6 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
 	 * @see prestaForumConnectorPlugin/lib/class/forumConnector/prestaAbstractForumConnector#promoteUserAsAdmin($projectUserId)
 	 */
@@ -598,27 +661,31 @@ class prestaPhpBB3Connector extends prestaAbstractForumConnector
 		$this->synchUser( $projectUserId );
 		$forumUserId	= $this->getForumUserIdFromProjectUserId( $projectUserId );
 		
-		$result = $this->sqlExec( "SELECT group_id FROM `". $this->dbprefix ."groups` WHERE group_name = 'ADMINISTRATORS'" );
+		$result = $this->sqlExec( "SELECT group_id FROM ". $this->dbprefix ."groups WHERE group_name = 'ADMINISTRATORS'" );
 		$ar 	= $this->db->sql_fetchrow($result);
 		if( is_array($ar) && array_key_exists('group_id', $ar ) )
 		{
 			$groupId		= $ar['group_id'];
 			$newUserType	= $isFoundator ? ", user_type='3' " : "";
 			// update password and define user as fondator
-			if( $this->sqlExec( "UPDATE `". $this->dbprefix ."users` SET group_id = '". $groupId ."' ". $newUserType .", user_password='". phpbb_hash( $password ) ."' WHERE user_id = '". $forumUserId ."'") )
+			$cryptedPassword = phpbb_hash( $password );
+			if( $this->sqlExec( "UPDATE ". $this->dbprefix ."users SET group_id='". $groupId ."' ". $newUserType .", user_password='". $cryptedPassword ."', user_rank='1', user_colour='AA0000' WHERE user_id='". $forumUserId ."'") )
 			{
+				// Delete old permissions and apply new admin permissions
+				$this->sqlExec( "DELETE FROM ". $this->dbprefix ."acl_users WHERE user_id = '". $forumUserId ."'");
+				$this->sqlExec( "INSERT INTO ". $this->dbprefix ."acl_users (user_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES ('". $forumUserId ."',0,0,4,0)");
 				// is the user is the new foundator, be sure that nobody else is the foundator (phpBB doesn't like to have multiple foundator)
 				if( $isFoundator )
 				{
-					$this->sqlExec( "UPDATE `". $this->dbprefix ."users` SET user_type=0 WHERE user_type = 3 AND user_id != '". $forumUserId ."'" );
+					$this->sqlExec( "UPDATE ". $this->dbprefix ."users SET user_type=0 WHERE user_type = 3 AND user_id != '". $forumUserId ."'" );
 				}
-				$result = $this->sqlExec( "SELECT * FROM `". $this->dbprefix ."user_group` WHERE group_id = '". $groupId ."' AND user_id = '". $forumUserId ."'" );
+				$result = $this->sqlExec( "SELECT * FROM ". $this->dbprefix ."user_group WHERE group_id='". $groupId ."' AND user_id='". $forumUserId ."'" );
 				$ar 	= $this->db->sql_fetchrow($result);
 				if( !empty( $ar ) )
 				{
 					$succeed	= true;
 				}
-				elseif( $this->sqlExec( "INSERT IGNORE INTO `". $this->dbprefix ."user_group` (group_id, user_id, group_leader, user_pending) VALUES ('". $groupId ."','". $forumUserId ."',0,0)") )
+				elseif( $this->sqlExec( "INSERT INTO ". $this->dbprefix ."user_group (group_id, user_id, group_leader, user_pending) VALUES ('". $groupId ."','". $forumUserId ."',0,0)") )
 				{
 					$succeed	= true;
 				}

@@ -45,8 +45,9 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 	/**
 	 * Add a custom field
 	 * @author	ylybliamay
-	 * @version	1.0 - 2009-10-30 - ylybliamay
+	 * @version	1.1 - 12 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
 	 * @since	1.0 - 2009-10-30 - ylybliamay
+	 * @param sfBaseTask $sfTask
 	 * @return 	boolean
 	 */
 	public function patchAddCustomField( sfBaseTask $sfTask )
@@ -54,24 +55,25 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 		$field	= $this->params['forumFieldProjectUserId'];
 		
 		// Check if this field already exist
-		$sql	= "SELECT `field_id` FROM `".$this->dbprefix."profile_fields` WHERE `field_name` = '". $field ."'";
+		$sql	= "SELECT field_id FROM ".$this->dbprefix."profile_fields WHERE field_name = '". $field ."'";
 		$result	= $this->sqlExec($sql);
 		$exist	= is_array( $this->db->sql_fetchrow($result) );
 		if(!$exist)
 		{
-			$sql = "INSERT INTO `".$this->dbprefix."profile_fields` (field_id, field_name, field_type, field_ident, field_length, field_minlen, field_maxlen, field_novalue, field_default_value, field_validation, field_required, field_show_on_reg, field_show_profile, field_hide, field_no_view, field_active, field_order )
-			 VALUES ( NULL, '". $field ."', 1, '". $field ."', '10', '0', '0', '0', '0', '', 0, 0, 0, 1, 1, 1, 1)";
+			$sql = "INSERT INTO ".$this->dbprefix."profile_fields (field_name, field_type, field_ident, field_length, field_minlen, field_maxlen, field_novalue, field_default_value, field_validation, field_required, field_show_on_reg, field_show_profile, field_hide, field_no_view, field_active, field_order )
+			 VALUES ( '". $field ."', 1, '". $field ."', '10', '0', '0', '0', '0', '', 0, 0, 0, 1, 1, 1, 1)";
 			$succeed	= $this->sqlExec($sql);
 		}
 		$sfTask->logSection( 'Database', 'Add custom field - part 1', null, $exist || $succeed ? 'INFO' : 'ERROR' );
 		
 		// Check if the field already create in the profile_fields_data table
-		$sql = "SHOW COLUMNS FROM `". $this->dbprefix ."profile_fields_data` LIKE 'pf_". $field ."'";
+		$sql = "SELECT column_name FROM information_schema.COLUMNS WHERE table_name = '".$this->dbprefix."profile_fields_data' AND column_name = 'pf_". $field ."'";
+		
 		$result = $this->sqlExec($sql);
 		$exist	= is_array( $this->db->sql_fetchrow($result) );
 		if(!$exist)
 		{
-			$sql = "ALTER TABLE `".$this->dbprefix."profile_fields_data` ADD `pf_". $field ."` bigint(20)";
+			$sql = "ALTER TABLE ".$this->dbprefix."profile_fields_data ADD pf_". $field ." bigint";
 			$succeed	= $this->sqlExec($sql);
 		}
 		$sfTask->logSection( 'Database', 'Add custom field - part 2', null, $exist || $succeed ? 'INFO' : 'ERROR' );
@@ -85,21 +87,21 @@ class prestaPhpBB3ConnectorPatcher extends prestaPhpBB3Connector implements pres
 	 */
 	protected function patchDisableRegistration( sfBaseTask $sfTask )
 	{
-		$sql = "UPDATE `". $this->dbprefix ."config` SET `config_value` = 3 WHERE `config_name` = 'require_activation'";
+		$sql = "UPDATE ". $this->dbprefix ."config SET config_value = 3 WHERE config_name = 'require_activation'";
 		$sfTask->logSection( 'Database', 'Disable registration', null, $this->sqlExec($sql) ? 'SUCCEED' : 'FAILURE' );
 	}
 	
 	/**
-	 * 
+	 * Disable user profile edition
 	 * 
 	 * @author	Christophe Dolivet <cdolivet@prestaconcept.net>
-	 * @version	1.0 - 6 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
+	 * @version	1.1 - 12 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
 	 * @since	6 nov. 2009 - Christophe Dolivet <cdolivet@prestaconcept.net>
 	 * @param	sfBaseTask $sfTask
 	 */
 	protected function patchDisableUserProfileEdition( sfBaseTask $sfTask )
 	{
-		$sql = "UPDATE `". $this->dbprefix ."modules` SET `module_enabled` = '0' WHERE `module_langname` = 'UCP_PROFILE_REG_DETAILS' LIMIT 1 ;";
+		$sql = "UPDATE ". $this->dbprefix ."modules SET module_enabled = '0' WHERE module_langname = 'UCP_PROFILE_REG_DETAILS';";
 		$sfTask->logSection( 'Database', 'Disable user profile edition', null, $this->sqlExec($sql) ? 'SUCCEED' : 'FAILURE' );
 	}
 	
@@ -352,10 +354,12 @@ EOF;
 	}
 	
 	/**
-	 * Set the general config for the forum
+	 * Set the general config for the forum (config.php)
+	 * 
 	 * @author	ylybliamay
-	 * @version	1.0 - 2009-10-30 - ylybliamay
+	 * @version	1.1 - 13 avr. 2011 - Sylvain Blatrix <sblatrix@prestaconcept.net>
 	 * @since	1.0 - 2009-10-30 - ylybliamay
+	 * @param 	sfBaseTask $sfTask
 	 */
 	protected function patchGeneralConfig( sfBaseTask $sfTask )
 	{
@@ -414,6 +418,13 @@ if( \$instanceCreated )
 // phpBB 3.0.x auto-generated configuration file
 // Do not change anything in this file!
 \$dbms	= \$dsn[0];
+
+// pgSQL compatibility
+if(\$dbms == 'pgsql')
+{
+	\$dbms = 'postgres';
+}
+
 \$dsn	= explode(';',\$dsn[1]);
 \$dsn_dbname	= explode('=',\$dsn[0]);
 \$dsn_dbhost	= explode('=',\$dsn[1]);
@@ -507,18 +518,18 @@ EOF;
 		// Check if line already exist
 		
 		// boost admin rights
-		$sql = "SELECT * FROM `".$this->dbprefix."acl_groups` WHERE `group_id` = 5 AND `forum_id` = 0 AND `auth_option_id`=0 AND `auth_role_id`=4 AND `auth_setting`=0";
+		$sql = "SELECT * FROM ".$this->dbprefix."acl_groups WHERE group_id = 5 AND forum_id = 0 AND auth_option_id=0 AND auth_role_id=4 AND auth_setting=0";
 		$result = $this->sqlExec($sql);
 		$exist	= is_array( $this->db->sql_fetchrow($result) );;
 		if(!$exist)
 		{
-			$sql = "INSERT INTO  `". $this->dbprefix ."acl_groups` (`group_id`, `forum_id`, `auth_option_id`, `auth_role_id`, `auth_setting`) VALUES ('5', '0', '0', '4', '0')";
+			$sql = "INSERT INTO  ". $this->dbprefix ."acl_groups (group_id, forum_id, auth_option_id, auth_role_id, auth_setting) VALUES ('5', '0', '0', '4', '0')";
 			$succeed	= $this->sqlExec($sql);
 		}
 		$sfTask->logSection( 'Database', 'Upgrade admin rights - 1', null, $exist || $succeed ? 'INFO' : 'ERROR' );
 		
 		// all admin can manage the admin group
-		$sql = "UPDATE  `". $this->dbprefix ."groups` SET `group_founder_manage` = 0 WHERE group_id = 5;";
+		$sql = "UPDATE  ". $this->dbprefix ."groups SET group_founder_manage = 0 WHERE group_id = 5;";
 		$succeed	= $this->sqlExec($sql);
 		$sfTask->logSection( 'Database', 'Upgrade admin rights - 2', null, $succeed ? 'INFO' : 'ERROR' );
 		
