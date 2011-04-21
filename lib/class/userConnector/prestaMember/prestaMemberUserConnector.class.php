@@ -34,7 +34,7 @@ class prestaMemberUserConnector extends prestaAbstractUserConnector
  			'setUsernameMethod'		=> 'setLogin',
 			'setEmailMethod'		=> 'setEmail',
 			'setPasswordlMethod'	=> 'setPassword',
-			'setIsActiveMethod'		=> 'setIsActive',
+			'setIsActiveMethod'		=> 'validate',
       
 		), $this->params );
 	}

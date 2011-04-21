@@ -31,7 +31,7 @@ class prestaSfGuardPropelConnectorMock extends prestaSfGuardPropelConnector impl
 		$user = new sfGuardUser();
 		call_user_func( array($user, $this->params['setUsernameMethod']), $nickname );
 		call_user_func( array($user, $this->params['setEmailMethod']), $email );
-		call_user_func( array($user, $this->params['setPasswordMethod']), $password );
+		call_user_func( array($user, $this->params['setPasswordlMethod']), $password );
 		call_user_func( array($user, $this->params['setIsActiveMethod']), $active );
 		$user->save();
 		return $user->getId();

@@ -13,7 +13,7 @@
  * @author cdolivet
  *
  */
-class prestaMemberUserConnectorMock extends prestaSfGuardDoctrineConnector implements prestaUserConnectorMockInterface
+class prestaMemberUserConnectorMock extends prestaMemberUserConnector implements prestaUserConnectorMockInterface
 {	
 	/**
 	 * Add a user
@@ -28,7 +28,7 @@ class prestaMemberUserConnectorMock extends prestaSfGuardDoctrineConnector imple
 		$user = new prestaMember();
 		call_user_func( array($user, $this->params['setUsernameMethod']), $nickname );
 		call_user_func( array($user, $this->params['setEmailMethod']), $email );
-		call_user_func( array($user, $this->params['setPasswordMethod']), $password );
+		call_user_func( array($user, $this->params['setPasswordlMethod']), $password );
 		call_user_func( array($user, $this->params['setIsActiveMethod']), $active );
 		$user->save();
 		return $user->getIdMember();
