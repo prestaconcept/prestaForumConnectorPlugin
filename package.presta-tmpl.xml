@@ -13,16 +13,22 @@ Just choose the connectors of you choice for the user management system on one p
 For example, this will allow you to connect sfGuard to phpBB3. Currently only sfGuard (Propel or Doctrine versions) and phpBB3 are supported. More will come.
 </description>
 	<lead>
+                <name>Dimitri Allegoet</name>
+                <user>Dimitri</user>
+                <email>dallegoet@prestaconcept.net</email>
+                <active>yes</active>
+        </lead>
+	<lead>
 		<name>Christophe DOLIVET</name>
 		<user>cdolivet</user>
 		<email>cdolivet@prestaconcept.net</email>
-		<active>yes</active>
+		<active>no</active>
 	</lead>
 	<lead>
 		<name>Mikael RANDY</name>
 		<user>mikael.randy</user>
 		<email>mrandy@prestaconcept.net</email>
-		<active>yes</active>
+		<active>no</active>
 	</lead>
 	<date>##CURRENT_DATE##</date>
 	<version>
