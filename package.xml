@@ -13,21 +13,27 @@ Just choose the connectors of you choice for the user management system on one p
 For example, this will allow you to connect sfGuard to phpBB3. Currently only sfGuard (Propel or Doctrine versions) and phpBB3 are supported. More will come.
 </description>
 	<lead>
+                <name>Dimitri Allegoet</name>
+                <user>Dimitri</user>
+                <email>dallegoet@prestaconcept.net</email>
+                <active>yes</active>
+        </lead>
+	<lead>
 		<name>Christophe DOLIVET</name>
 		<user>cdolivet</user>
 		<email>cdolivet@prestaconcept.net</email>
-		<active>yes</active>
+		<active>no</active>
 	</lead>
 	<lead>
 		<name>Mikael RANDY</name>
 		<user>mikael.randy</user>
 		<email>mrandy@prestaconcept.net</email>
-		<active>yes</active>
+		<active>no</active>
 	</lead>
-	<date>2010-12-09</date>
+	<date>2012-06-07</date>
 	<version>
-		<release>1.0.4</release>
-		<api>1.0.0</api>
+		<release>1.0.5</release>
+		<api>1.0.5</api>
 	</version>
 	<stability>
 		<release>stable</release>
@@ -51,6 +57,9 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 			<file role="data" name="lib/class/forumConnector/prestaForumConnectorPatcherInterface.php" />
 			<file role="data" name="lib/class/prestaForumFactory.class.php" />
 			<file role="data" name="lib/class/userConnector/prestaAbstractUserConnector.class.php" />
+			<file role="data" name="lib/class/userConnector/prestaMember/prestaForumConnectorPrestaMemberSecurityUser.class.php" />
+			<file role="data" name="lib/class/userConnector/prestaMember/prestaMemberUserConnector.class.php" />
+			<file role="data" name="lib/class/userConnector/prestaMember/prestaMemberUserConnectorMock.class.php" />
 			<file role="data" name="lib/class/userConnector/prestaUserConnectorMockInterface.php" />
 			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaForumConnectorSfGuardDoctrineSecurityUser.class.php" />
 			<file role="data" name="lib/class/userConnector/sfGuardDoctrine/prestaSfGuardDoctrineConnector.class.php" />
@@ -85,6 +94,24 @@ For example, this will allow you to connect sfGuard to phpBB3. Currently only sf
 	</dependencies>
 	<phprelease />
 	<changelog>
+		<release>
+			<version>
+				<release>1.0.5</release>
+				<api>1.0.5</api>
+			</version>
+			<stability>
+				<release>stable</release>
+				<api>stable</api>
+			</stability>
+			<date>2012-06-07</date>
+			<notes>
+Add pgSQL compatibility
+Fixed admin permissions when you promote an user
+Update README file
+Update unit tests
+
+	        </notes>
+		</release> 
 		<release>
 			<version>
 				<release>1.0.4</release>
